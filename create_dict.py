@@ -1,3 +1,5 @@
+from pymystem3 import Mystem
+
 def load_dict(src_tar_fp):
     d = {}
     with open(src_tar_fp, 'r', encoding='utf-8') as infp:
@@ -14,27 +16,36 @@ def load_dict(src_tar_fp):
     return d
 
 def merge_dicts(dict_a, dict_b):
-    merged = dict_a
+    merged = {}
     for word in dict_b:
-        if word not in merged:
-            merged[word] = [dict_b[word]]
+        if word not in dict_a:
+            continue
         else:
-            merged[word] = [merged[word], dict_b[word]]
+            merged[word] = [dict_a[word], dict_b[word]]
+    for word in dict_a:
+        if word not in dict_b:
+            continue
+        else:
+            merged[word] = [dict_a[word], dict_b[word]]
     return merged
 
-if __name__ == '__main__': 
+if __name__ == '__main__':
+    r = Mystem()
     en_nl_fp = 'en-nl.txt'
     en_ru_fp = 'en-ru.txt'
     en_nl = load_dict(en_nl_fp)
     en_ru = load_dict(en_ru_fp)
     merged = merge_dicts(en_nl, en_ru)
+    triplets = set()
+    for en_word in merged:
+        if len(merged[en_word]) < 2:
+            continue
+        nl = merged[en_word][0]
+        ru = merged[en_word][1]
+        for nl_word in nl:
+            for ru_word in ru:
+                ru_word = r.lemmatize(ru_word)[0]
+                triplets.add((nl_word, ru_word, en_word))
     with open('merged.txt', 'w', encoding='utf-8') as outfp:
-        for en_word in merged:
-            if len(merged[en_word]) < 2:
-                continue
-            nl = merged[en_word][0]
-            ru = merged[en_word][1]
-            #TODO: lemmatization
-            for nl_word in nl:
-                for ru_word in ru:
-                    outfp.write('{} {} {}\n'.format(nl_word, ru_word, en_word)) 
+        for triplet in triplets:
+            outfp.write('{} {} {}\n'.format(triplet[2], triplet[0], triplet[1])) 
