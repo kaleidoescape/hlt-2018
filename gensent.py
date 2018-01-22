@@ -3,6 +3,7 @@ from string import punctuation as PUNCTUATION
 import re
 import os
 import w2vconfig
+from pymystem3 import Mystem
 
 class SentenceGeneratorException(Exception):
     """Raise for improper use of the SentenceGenerator."""
@@ -20,6 +21,7 @@ class SentenceGenerator(object):
         self.filepaths = None
         self.sentence_list = None
         self.language = language
+        self.m = Mystem()
 
     def read_directory(self, directory):
         """Prepare the SentenceGenerator from a directory on disk."""
@@ -57,12 +59,17 @@ class SentenceGenerator(object):
         regex = re.compile(r'^[$€]?(?=.)([+-]?([0-9]*)(\.([0-9]+))?)$')
         
         #split into words
-        tokenized = word_tokenize(sentence)
+        if self.language == 'russian':
+            tokenized = self.m.lemmatize(sentence)
+        else:
+            tokenized = word_tokenize(sentence)
         
         #process into lowercased words, replacing numbers and punctuation
         tokens = []
         for w in tokenized:
-            if w in PUNCTUATION:    #remove !"#$%&'()*+,-./:;<=>?@[\]^_`{|}~
+            #remove !"#$%&'()*+,-./:;<=>?@[\]^_`{|}~
+            w = w.strip()
+            if w in PUNCTUATION or not w:    
                 continue
             w = w.lower()                  #lowercase
             w = re.sub(regex, self.NUM, w) #replace numbers

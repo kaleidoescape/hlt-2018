@@ -32,7 +32,7 @@ class TestSentenceGenerator(unittest.TestCase):
     def test_process_sentence_russian(self):
         sentences = gensent.SentenceGenerator(language='russian')
         result = sentences._process_sentence("Три девицы под окном Пряли поздно вечерком.")
-        correct = ['три', 'девицы', 'под', 'окном', 'пряли', 'поздно', 'вечерком']
+        correct = ['три', 'девица', 'под', 'окно', 'прясть', 'поздно', 'вечерок']
         self.assertEqual(result, correct)
 
     def test_process_US_money(self):
