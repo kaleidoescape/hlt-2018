@@ -17,11 +17,13 @@ class SentenceGenerator(object):
     """
     NUM = 'NUM_TOKEN'
 
-    def __init__(self, language='english'):
+    def __init__(self, language='english', maxsents=0):
         self.filepaths = None
         self.sentence_list = None
         self.language = language
         self.m = Mystem()
+        self.maxsents = maxsents
+        self.count = 0
 
     def read_directory(self, directory):
         """Prepare the SentenceGenerator from a directory on disk."""
@@ -43,6 +45,9 @@ class SentenceGenerator(object):
 
         if self.sentence_list is not None:
             for sentence in self.sentence_list:
+                self.count += 1
+                if self.maxsents and self.count > self.maxsents:
+                    raise StopIteration
                 yield self._process_sentence(sentence)
 
         if self.filepaths is not None:
@@ -51,6 +56,9 @@ class SentenceGenerator(object):
                     text = infp.read() 
                     sents = sent_tokenize(text, language=self.language)
                     for sent in sents:
+                        self.count += 1
+                        if self.maxsents and self.count > self.maxsents:
+                            raise StopIteration
                         yield self._process_sentence(sent)
 
     def _process_sentence(self, sentence):
