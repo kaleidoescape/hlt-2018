@@ -1,4 +1,5 @@
 from pymystem3 import Mystem
+import nl_lemmatizer
 
 def load_dict(src_tar_fp):
     d = {}
@@ -29,6 +30,7 @@ def merge_dicts(dict_a, dict_b):
             merged[word] = [dict_a[word], dict_b[word]]
     return merged
 
+
 if __name__ == '__main__':
     r = Mystem()
     en_nl_fp = 'en-nl.txt'
@@ -43,6 +45,7 @@ if __name__ == '__main__':
         nl = merged[en_word][0]
         ru = merged[en_word][1]
         for nl_word in nl:
+            nl_word = nl_lemmatizer.lemmatize(nl_word)
             for ru_word in ru:
                 ru_word = r.lemmatize(ru_word)[0]
                 triplets.add((nl_word, ru_word, en_word))
