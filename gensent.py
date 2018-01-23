@@ -54,7 +54,7 @@ class SentenceGenerator(object):
             for fp in self.filepaths:
                 with open(fp, 'r', encoding='utf-8') as infp:
                     text = infp.read() 
-                    sents = sent_tokenize(text, language=self.language)
+                    sents = sent_tokenize(text)
                     for sent in sents:
                         self.count += 1
                         if self.maxsents and self.count > self.maxsents:
