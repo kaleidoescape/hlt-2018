@@ -45,10 +45,11 @@ if __name__ == '__main__':
         nl = merged[en_word][0]
         ru = merged[en_word][1]
         for nl_word in nl:
-            nl_word = nl_lemmatizer.lemmatize(nl_word)
-            for ru_word in ru:
-                ru_word = r.lemmatize(ru_word)[0]
-                triplets.add((nl_word, ru_word, en_word))
+            for word in nl_lemmatizer.lemmatize(nl_word):
+                nl_word = word
+                for ru_word in ru:
+                    ru_word = r.lemmatize(ru_word)[0]
+                    triplets.add((nl_word, ru_word, en_word))
     with open('merged.txt', 'w', encoding='utf-8') as outfp:
         for triplet in triplets:
             outfp.write('{} {} {}\n'.format(triplet[2], triplet[0], triplet[1])) 

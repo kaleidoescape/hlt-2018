@@ -52,6 +52,12 @@ class TestSentenceGenerator(unittest.TestCase):
         result = sentences._process_sentence("Pi is 3.14159")
         correct = ['pi', 'is', sentences.NUM]
         self.assertEqual(result, correct)
+        
+    def test_dutch(self):
+        sentences = gensent.SentenceGenerator(language='dutch')
+        result = sentences._process_sentence("Ik ga naar buiten toe")
+        correct = ['ik', 'gaan', 'naar', 'buiten', 'toe']
+        self.assertEqual(result, correct)
 
 if __name__ == '__main__':
     unittest.main()

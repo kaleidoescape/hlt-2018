@@ -19,5 +19,6 @@ def lemmatize(word):
     with open('input_word.txt', 'w', encoding='utf-8') as f:
         f.write(word)
     text = subprocess.check_output("~/Documenten/HLT/lemmatizer-2/cstlemma/cstlemma -L -f ~/Documenten/HLT/lemmatizer-2/cstlemma/flexrules -i input_word.txt", shell=True)
-    return(text.decode().split()[-1])
+    words = text.decode().split()[-1]
+    return(words.split('|'))
     

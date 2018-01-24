@@ -4,6 +4,7 @@ import re
 import os
 import w2vconfig
 from pymystem3 import Mystem
+import nl_lemmatizer
 
 class SentenceGeneratorException(Exception):
     """Raise for improper use of the SentenceGenerator."""
@@ -69,6 +70,12 @@ class SentenceGenerator(object):
         #split into words
         if self.language == 'russian':
             tokenized = self.m.lemmatize(sentence)
+        if self.language == 'dutch':
+            tokenized = []
+            print(sentence)
+            for word in sentence.split():
+                lemma = nl_lemmatizer.lemmatize(word)
+                tokenized.append(lemma[0])
         else:
             tokenized = word_tokenize(sentence)
         
