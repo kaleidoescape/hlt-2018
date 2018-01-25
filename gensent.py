@@ -25,6 +25,7 @@ class SentenceGenerator(object):
         self.m = Mystem()
         self.maxsents = maxsents
         self.count = 0
+        self.word_token_count = 0
 
     def read_directory(self, directory):
         """Prepare the SentenceGenerator from a directory on disk."""
@@ -72,7 +73,6 @@ class SentenceGenerator(object):
             tokenized = self.m.lemmatize(sentence)
         if self.language == 'dutch':
             tokenized = []
-            print(sentence)
             for word in sentence.split():
                 lemma = nl_lemmatizer.lemmatize(word)
                 tokenized.append(lemma[0])
@@ -89,6 +89,7 @@ class SentenceGenerator(object):
             w = w.lower()                  #lowercase
             w = re.sub(regex, self.NUM, w) #replace numbers
             tokens.append(w)
+            self.word_token_count += 1
 
         return tokens
 

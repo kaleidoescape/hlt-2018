@@ -6,7 +6,7 @@ gensim_config = {
     'sg': 0,                  #training algorithm, 0=CBOW, 1=skip-gram
                               #default=0
 
-    'size': 100,              #dimensionality of feature vectors 
+    'size': 300,              #dimensionality of feature vectors 
                               #(size of NN layers), default=100
 
     'window': 5,              #max distance between current and predicted word
@@ -20,7 +20,7 @@ gensim_config = {
     'min_count': 5,           #ignore all words with freq lower than this
                               #default=5
 
-    'max_vocab_size': 50000,  #if there are more unique words than this, 
+    'max_vocab_size': 100000, #if there are more unique words than this, 
                               #prune the infrequent ones, default=None
                               #useful as a RAM saving method because for
                               #model params it requires RAM in bytes equal to:
