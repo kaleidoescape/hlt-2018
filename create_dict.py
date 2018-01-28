@@ -23,15 +23,15 @@ def parse_args():
         help='where to create the new Dutch-Russian dictionary')
     args = parser.parse_args()
 
-    if not args.en-nl:
-        args.en-nl = 'en-nl.txt'
-    if not args.en-ru:
-        args.en-ru = 'en-ru.txt'
-    if not args.nl-ru:
-        args.nl-ru = w2config.nl_ru_dict
+    if not args.en_nl:
+        args.en_nl = 'en-nl.txt'
+    if not args.en_ru:
+        args.en_ru = 'en-ru.txt'
+    if not args.nl_ru:
+        args.nl_ru = w2config.nl_ru_dict
 
-    if os.path.exists(args.nl-ru):
-        print('Dutch-Russian dictionary already exists: {}'.format(args.nl-ru))
+    if os.path.exists(args.nl_ru):
+        print('Dutch-Russian dictionary already exists: {}'.format(args.nl_ru))
         sys.exit(0)
     return args
 
@@ -69,8 +69,8 @@ if __name__ == '__main__':
     args = parse_args()
 
     r = Mystem()
-    en_nl_fp = args.en-nl
-    en_ru_fp = args.en-ru
+    en_nl_fp = args.en_nl
+    en_ru_fp = args.en_ru
     en_nl = load_dict(en_nl_fp)
     en_ru = load_dict(en_ru_fp)
     merged = merge_dicts(en_nl, en_ru)
@@ -86,6 +86,6 @@ if __name__ == '__main__':
                 for ru_word in ru:
                     ru_word = r.lemmatize(ru_word)[0]
                     triplets.add((nl_word, ru_word, en_word))
-    with open(args.nl-ru, 'w', encoding='utf-8') as outfp:
+    with open(args.nl_ru, 'w', encoding='utf-8') as outfp:
         for triplet in triplets:
             outfp.write('{} {} {}\n'.format(triplet[2], triplet[0], triplet[1])) 

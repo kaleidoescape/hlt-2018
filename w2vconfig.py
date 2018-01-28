@@ -1,5 +1,6 @@
 data_dir = '../wikipedia_data'
 cstlemma_dir = '/home/sveta/unitn/hlt/CSTLemma'
+nl_ru_dict = 'nl-ru.txt'
 
 #gensim word2vec parameters:
 gensim_config = {
