@@ -6,6 +6,8 @@ wd=`pwd`
 virtualenv -p python3 env
 chmod +x . ./env/bin/activate
 . ./env/bin/activate
+pip3 install http://download.pytorch.org/whl/cu80/torch-0.3.0.post4-cp35-cp35m-linux_x86_64.whl 
+pip3 install torchvision
 pip3 install -r requirements.txt
 
 echo "Downloading Dutch lemmatizer."
