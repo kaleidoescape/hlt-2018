@@ -36,7 +36,7 @@ print('Working on Dutch...')
 start_time = time.time()
 
 nl_direc = os.path.join(w2vconfig.data_dir, 'nl')
-nl_sents = gensent.SentenceGenerator(language='dutch', maxsents=100)
+nl_sents = gensent.SentenceGenerator(language='dutch', maxsents=100, cstlemma_dir=args.cstlemma_dir)
 nl_sents.read_directory(nl_direc)
 nl_model = gensim.models.Word2Vec(nl_sents, **w2vconfig.gensim_config)
 nl_vectors = nl_model.wv
