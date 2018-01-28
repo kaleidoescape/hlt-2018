@@ -3,6 +3,7 @@ import sys
 from pymystem3 import Mystem
 import nl_lemmatizer
 import w2vconfig
+import argparse
 
 class AlterParser(argparse.ArgumentParser):
     """Change behaviour of ArgumentParser.error() to print help and exit."""
