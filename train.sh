@@ -14,7 +14,7 @@ wd=`pwd`
 if [ ! -f $nl_vectors ] || [ ! -f $ru_vectors ]; then
     echo "Step 1: Training language specific vectors with gensim."
     mkdir -p ./vectors
-    python3 train_gensim_vectors.py --data_dir $wikipedia_data --cstlemma_dir $cstlemma_dir
+    python3 w2v.py --data_dir $wikipedia_data --cstlemma_dir $cstlemma_dir
     
 else
     echo "Step 1: Previously trained language specific vectors found."
