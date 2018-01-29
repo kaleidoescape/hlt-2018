@@ -17,23 +17,37 @@ def parse_args():
     parser = AlterParser(prog='create_dict.py', 
             description='Create a Dutch-Russian dictionary from English-Dutch and English-Russian ones.')
     parser.add_argument('--en-nl',
+        type=str, 
+        default='en-nl.txt',
         help='file path to English-Dutch dictionary')
     parser.add_argument('--en-ru',
+        type=str, 
+        default='en-ru.txt',
         help='file path to English-Russian dictionary')
+    parser.add_argument('--directory',
+        type=str, 
+        default=w2vconfig.nl_ru_dict,
+        help='where to create the new Dutch-Russian dictionary or dictionaries')
     parser.add_argument('--nl-ru',
-        help='where to create the new Dutch-Russian dictionary')
+        type=bool, 
+        default=True,
+        help='Create a Dutch to Russian dictionary if set to True')
+    parser.add_argument('--ru-nl',
+        type=bool, 
+        default=True,
+        help='Create a Russian to Dutch dictionary if set to True')
     args = parser.parse_args()
 
-    if not args.en_nl:
-        args.en_nl = 'en-nl.txt'
-    if not args.en_ru:
-        args.en_ru = 'en-ru.txt'
-    if not args.nl_ru:
-        args.nl_ru = w2config.nl_ru_dict
+#    if not args.en_nl:
+#        args.en_nl = 'en-nl.txt'
+#    if not args.en_ru:
+#        args.en_ru = 'en-ru.txt'
+#    if not args.nl_ru:
+#        args.nl_ru = w2vconfig.nl_ru_dict
 
-    if os.path.exists(args.nl_ru):
-        print('Dutch-Russian dictionary already exists: {}'.format(args.nl_ru))
-        sys.exit(0)
+#    if os.path.exists(args.directory):
+#        print('Dutch-Russian dictionary already exists: {}'.format(args.nl_ru))
+#        sys.exit(0)
     return args
 
 def load_dict(src_tar_fp):
@@ -68,14 +82,14 @@ def merge_dicts(dict_a, dict_b):
 
 if __name__ == '__main__':
     args = parse_args()
-
     r = Mystem()
     en_nl_fp = args.en_nl
     en_ru_fp = args.en_ru
     en_nl = load_dict(en_nl_fp)
     en_ru = load_dict(en_ru_fp)
     merged = merge_dicts(en_nl, en_ru)
-    triplets = set()
+    triplets = [] # changed this to a list to keep the dicts "roughly" sorted on freq info (assuming that the 
+                  # translations of English words are roughly as frequent as the English words, which is needed for MUSE
     for en_word in merged:
         if len(merged[en_word]) < 2:
             continue
@@ -86,7 +100,19 @@ if __name__ == '__main__':
                 nl_word = word
                 for ru_word in ru:
                     ru_word = r.lemmatize(ru_word)[0]
-                    triplets.add((nl_word, ru_word, en_word))
-    with open(args.nl_ru, 'w', encoding='utf-8') as outfp:
-        for triplet in triplets:
-            outfp.write('{} {} {}\n'.format(triplet[2], triplet[0], triplet[1])) 
+                    if (nl_word, ru_word, en_word) not in triplets:
+                        triplets.append((nl_word, ru_word, en_word))
+    if args.nl_ru:
+        with open(args.directory+'nl-ru.txt', 'w', encoding='utf-8') as outfp:
+            for triplet in triplets:
+                outfp.write('{}\t{}\n'.format(triplet[0], triplet[1])) 
+    if args.ru_nl:
+        with open(args.directory+'ru-nl.txt', 'w', encoding='utf-8') as outfp:
+            for triplet in triplets:
+                outfp.write('{}\t{}\n'.format(triplet[1], triplet[0])) 
+   
+            
+            
+#with open(args.filepath+'nl-ru.txt', 'w', encoding='utf-8') as outfp:
+#        for triplet in triplets:
+#            outfp.write('{} {}\n'.format(triplet[2], triplet[0], triplet[1])) 
