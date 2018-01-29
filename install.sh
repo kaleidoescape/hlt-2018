@@ -11,16 +11,22 @@ pip3 install torchvision
 pip3 install -r requirements.txt
 
 echo "Downloading Dutch lemmatizer."
-git clone https://github.com/kuhumcst/cstlemma.git
-cd cstlemma/src
-make cstlemma
+mkdir -p cstlemma
+cd cstlemma
+wget -O makecstlemma.bash https://raw.githubusercontent.com/kuhumcst/cstlemma/master/doc/makecstlemma.bash
 wget -O flexrules.dutch http://ada.sc.ku.dk/download/cstlemma/dutch/flexrules
+chmod +x ./makecstlemma.bash
+./makecstlemma.bash
 
 echo "Downloading dictionaries."
 cd $wd
 git clone git@github.com:facebookresearch/MUSE.git
-wget https://s3.amazonaws.com/arrival/dictionaries/en-nl.txt
-wget https://s3.amazonaws.com/arrival/dictionaries/en-ru.txt
+if [ ! -d en-nl.txt ]; then
+    wget https://s3.amazonaws.com/arrival/dictionaries/en-nl.txt
+fi
+if [ ! -d en-ru.txt ]; then
+    wget https://s3.amazonaws.com/arrival/dictionaries/en-ru.txt
+fi
 
 if [ ! -d $wikipedia_data ]; then
     echo "Downloading Wikipedia data."

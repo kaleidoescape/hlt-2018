@@ -23,7 +23,7 @@ gensim_config = {
     'min_count': 5,           #ignore all words with freq lower than this
                               #default=5
 
-    'max_vocab_size': 100, #if there are more unique words than this, 
+    'max_vocab_size': 100000, #if there are more unique words than this, 
                               #prune the infrequent ones, default=None
                               #useful as a RAM saving method because for
                               #model params it requires RAM in bytes equal to:

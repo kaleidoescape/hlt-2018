@@ -42,7 +42,6 @@ start_time = time.time()
 nl_direc = os.path.join(args.data_dir, 'nl')
 nl_sents = gensent.SentenceGenerator(language='dutch', maxsents=10, cstlemma_dir=args.cstlemma_dir)
 nl_sents.read_directory(nl_direc)
-for sent in nl_sents: print(sent)
 nl_model = gensim.models.Word2Vec(nl_sents, **w2vconfig.gensim_config)
 nl_vectors = nl_model.wv
 print('Dutch word tokens: {}'.format(nl_sents.word_token_count))

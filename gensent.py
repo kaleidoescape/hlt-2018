@@ -59,11 +59,10 @@ class SentenceGenerator(object):
         if self.filepaths is not None:
             for fp in self.filepaths:
                 if self.language == 'dutch': 
-                    text = self._get_filetext_with_cstlemma(fp)  
+                    text = self._get_filetext_with_cstlemma(fp)
                     sents = sent_tokenize(text) #split into sentences
                     for sent in sents:
                         self.count += 1
-                        print(self.count, self.maxsents)
                         if self.maxsents and self.count > self.maxsents:
                             raise StopIteration
                         yield self._process_sentence(sent) 
