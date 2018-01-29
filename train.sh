@@ -8,7 +8,7 @@
 . ./env/bin/activate
 
 echo "Step 3: Evaluating on Russian-Dutch dictionary."
-python3 create_dict.py --en-nl $nl_dict --en-ru $ru-dict --nl-ru $nl_ru_dict
+python3 create_dict.py --en-nl $nl_dict --en-ru $ru_dict --nl-ru $nl_ru_dict
 
 wd=`pwd`
 if [ ! -f $nl_vectors ] || [ ! -f $ru_vectors ]; then
