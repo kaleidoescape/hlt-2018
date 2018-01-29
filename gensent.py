@@ -27,7 +27,8 @@ class SentenceGenerator(object):
         self.maxsents = maxsents
         self.count = 0
         self.word_token_count = 0
-        if not cstlemma_dir:
+        self.cstlemma_dir = cstlemma_dir
+        if not self.cstlemma_dir:
             self.cstlemma_dir = w2vconfig.cstlemma_dir
 
     def read_directory(self, directory):
@@ -62,6 +63,7 @@ class SentenceGenerator(object):
                     sents = sent_tokenize(text) #split into sentences
                     for sent in sents:
                         self.count += 1
+                        print(self.count, self.maxsents)
                         if self.maxsents and self.count > self.maxsents:
                             raise StopIteration
                         yield self._process_sentence(sent) 

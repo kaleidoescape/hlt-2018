@@ -21,12 +21,16 @@ def parse_args():
         help='directory where text data is located (with subdirs "nl" and "ru" which contain vector text files)')
     parser.add_argument('--cstlemma_dir',
         help='directory where CSTLemma for lemmatizing Dutch is located')
+    parser.add_argument('--vectors_dir',
+        help='directory where vectors text files will be saved')
     args = parser.parse_args()
     
     if not args.data_dir:
         args.data_dir = w2vconfig.data_dir
     if not args.cstlemma_dir:
         args.cstlemma_dir = w2vconfig.cstlemma_dir
+    if not args.vectors_dir:
+        args.vectors_dir = w2vconfig.vectors_dir
 
     return args
 
@@ -35,14 +39,16 @@ args = parse_args()
 print('Working on Dutch...')
 start_time = time.time()
 
-nl_direc = os.path.join(w2vconfig.data_dir, 'nl')
-nl_sents = gensent.SentenceGenerator(language='dutch', maxsents=100, cstlemma_dir=args.cstlemma_dir)
+nl_direc = os.path.join(args.data_dir, 'nl')
+nl_sents = gensent.SentenceGenerator(language='dutch', maxsents=10, cstlemma_dir=args.cstlemma_dir)
 nl_sents.read_directory(nl_direc)
+for sent in nl_sents: print(sent)
 nl_model = gensim.models.Word2Vec(nl_sents, **w2vconfig.gensim_config)
 nl_vectors = nl_model.wv
 print('Dutch word tokens: {}'.format(nl_sents.word_token_count))
 print('Dutch vocab size: {}'.format(len(nl_model.wv.vocab)))
-nl_vectors.save_word2vec_format('vectors/nl_vectors.txt', binary=False)
+nl_vectors_fp = os.path.join(args.vectors_dir, 'nl_vectors.txt')
+nl_vectors.save_word2vec_format(nl_vectors_fp, binary=False)
 
 elapsed_time = time.time() - start_time
 print('Elapsed time:', elapsed_time)
@@ -52,14 +58,15 @@ print() #print line break
 print('Working on Russian...')
 start_time = time.time()
 
-ru_direc = os.path.join(w2vconfig.data_dir, 'ru')
-ru_sents = gensent.SentenceGenerator(language='russian', maxsents=100)
+ru_direc = os.path.join(args.data_dir, 'ru')
+ru_sents = gensent.SentenceGenerator(language='russian', maxsents=10)
 ru_sents.read_directory(ru_direc)
 ru_model = gensim.models.Word2Vec(ru_sents, **w2vconfig.gensim_config)
 print('Russian word tokens: {}'.format(ru_sents.word_token_count))
 print('Russian vocab size: {}'.format(len(ru_model.wv.vocab)))
 ru_vectors = ru_model.wv
-ru_vectors.save_word2vec_format('vectors/ru_vectors.txt', binary=False)
+ru_vectors_fp = os.path.join(args.vectors_dir, 'ru_vectors.txt')
+ru_vectors.save_word2vec_format(ru_vectors_fp, binary=False)
 
 elapsed_time = time.time() - start_time
 print('Elapsed time:', elapsed_time)
