@@ -33,7 +33,7 @@ print('Working on Dutch...')
 start_time = time.time()
 
 nl_direc = os.path.join(args.data_dir, 'nl')
-nl_sents = gensent.SentenceGenerator(language='dutch', maxsents=10, cstlemma_dir=args.cstlemma_dir)
+nl_sents = gensent.SentenceGenerator(language='dutch', cstlemma_dir=args.cstlemma_dir)
 nl_sents.read_directory(nl_direc)
 nl_model = gensim.models.Word2Vec(nl_sents, **w2vconfig.gensim_config)
 nl_vectors = nl_model.wv
@@ -51,7 +51,7 @@ print('Working on Russian...')
 start_time = time.time()
 
 ru_direc = os.path.join(args.data_dir, 'ru')
-ru_sents = gensent.SentenceGenerator(language='russian', maxsents=10)
+ru_sents = gensent.SentenceGenerator(language='russian')
 ru_sents.read_directory(ru_direc)
 ru_model = gensim.models.Word2Vec(ru_sents, **w2vconfig.gensim_config)
 print('Russian word tokens: {}'.format(ru_sents.word_token_count))

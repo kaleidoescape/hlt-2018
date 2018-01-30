@@ -37,6 +37,15 @@ fi
 echo "Downloading MUSE."
 git clone git@github.com:facebookresearch/MUSE.git
 
+if [ ! -d $vectors ]; then
+    echo "Downloading pre-trained word vectors."
+    wget -O vectors.zip https://www.dropbox.com/s/nl7bwt5rnf0jhsz/vectors.zip?dl=1
+    unzip vectors.zip -d $vectors_dir
+else
+    echo "Pre-trained word vectors already exist: $vectors_dir"
+fi
+
+#TODO it an option to run the training on this data rather than on pre-trained vectors
 if [ ! -d $wikipedia_data ]; then
     echo "Downloading Wikipedia data."
     wget -O wikipedia_data.zip https://www.dropbox.com/s/a6qihkjp385d7zw/wikipedia_data.zip?dl=1
@@ -44,6 +53,8 @@ if [ ! -d $wikipedia_data ]; then
 else
     echo "Wikipedia data already exists in: $wikipedia_data"
 fi
+
+
 
 echo "Installation completed."
 exit 0 #to exit the virtualenv subshell
