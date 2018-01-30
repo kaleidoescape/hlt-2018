@@ -10,11 +10,11 @@
 wd=`pwd`
 if [ ! -f $wd/$vectors_dir/nl_vectors.txt ] || [ ! -f $wd/$vectors_dir/ru_vectors.txt ]; then
     echo "Step 1: Training language specific vectors with gensim."
-    mkdir -p ./vectors
+    mkdir -p $wd/$vectors_dir
     python3 w2v.py \
         --data_dir $wd/$wikipedia_data \
         --cstlemma_dir $wd/$cstlemma_dir \
-        --vectors_dir $wd/$vectors
+        --vectors_dir $wd/$vectors_dir
     
 else
     echo "Step 1: Previously trained language specific vectors found."
