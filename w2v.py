@@ -17,20 +17,13 @@ def parse_args():
     """Parse command line arguments."""
     parser = AlterParser(prog='train_gensim_vectors.py', 
             description='Use gensim to train Dutch and Russian word vectors.')
-    parser.add_argument('--data_dir',
+    parser.add_argument('--data_dir', default=w2vconfig.data_dir,
         help='directory where text data is located (with subdirs "nl" and "ru" which contain vector text files)')
-    parser.add_argument('--cstlemma_dir',
+    parser.add_argument('--cstlemma_dir', default=w2vconfig.cstlemma_dir,
         help='directory where CSTLemma for lemmatizing Dutch is located')
-    parser.add_argument('--vectors_dir',
+    parser.add_argument('--vectors_dir', default=w2vconfig.vectors_dir,
         help='directory where vectors text files will be saved')
     args = parser.parse_args()
-    
-    if not args.data_dir:
-        args.data_dir = w2vconfig.data_dir
-    if not args.cstlemma_dir:
-        args.cstlemma_dir = w2vconfig.cstlemma_dir
-    if not args.vectors_dir:
-        args.vectors_dir = w2vconfig.vectors_dir
 
     return args
 

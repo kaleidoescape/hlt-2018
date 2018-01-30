@@ -16,38 +16,27 @@ def parse_args():
     """Parse command line arguments."""
     parser = AlterParser(prog='create_dict.py', 
             description='Create a Dutch-Russian dictionary from English-Dutch and English-Russian ones.')
-    parser.add_argument('--en-nl',
+    parser.add_argument('--en_nl',
         type=str, 
-        default='en-nl.txt',
+        default=w2vconfig.dicts_dir + 'en-nl.txt',
         help='file path to English-Dutch dictionary')
-    parser.add_argument('--en-ru',
+    parser.add_argument('--en_ru',
         type=str, 
-        default='en-ru.txt',
+        default=w2vconfig.dicts_dir + 'en-ru.txt',
         help='file path to English-Russian dictionary')
     parser.add_argument('--directory',
         type=str, 
-        default=w2vconfig.nl_ru_dict,
+        default=w2vconfig.dicts_dir,
         help='where to create the new Dutch-Russian dictionary or dictionaries')
-    parser.add_argument('--nl-ru',
+    parser.add_argument('--nl_ru',
         type=bool, 
         default=True,
         help='Create a Dutch to Russian dictionary if set to True')
-    parser.add_argument('--ru-nl',
+    parser.add_argument('--ru_nl',
         type=bool, 
         default=True,
         help='Create a Russian to Dutch dictionary if set to True')
     args = parser.parse_args()
-
-#    if not args.en_nl:
-#        args.en_nl = 'en-nl.txt'
-#    if not args.en_ru:
-#        args.en_ru = 'en-ru.txt'
-#    if not args.nl_ru:
-#        args.nl_ru = w2vconfig.nl_ru_dict
-
-#    if os.path.exists(args.directory):
-#        print('Dutch-Russian dictionary already exists: {}'.format(args.nl_ru))
-#        sys.exit(0)
     return args
 
 def load_dict(src_tar_fp):
@@ -103,11 +92,13 @@ if __name__ == '__main__':
                     if (nl_word, ru_word, en_word) not in triplets:
                         triplets.append((nl_word, ru_word, en_word))
     if args.nl_ru:
-        with open(args.directory+'nl-ru.txt', 'w', encoding='utf-8') as outfp:
+        fp = os.path.join(args.directory, 'nl-ru.txt')
+        with open(fp, 'w', encoding='utf-8') as outfp:
             for triplet in triplets:
                 outfp.write('{}\t{}\n'.format(triplet[0], triplet[1])) 
     if args.ru_nl:
-        with open(args.directory+'ru-nl.txt', 'w', encoding='utf-8') as outfp:
+        fp = os.path.join(args.directory, 'ru-nl.txt')
+        with open(fp, 'w', encoding='utf-8') as outfp:
             for triplet in triplets:
                 outfp.write('{}\t{}\n'.format(triplet[1], triplet[0])) 
    

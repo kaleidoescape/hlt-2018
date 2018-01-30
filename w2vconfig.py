@@ -1,7 +1,7 @@
-data_dir = '../wikipedia_data'
-cstlemma_dir = '/home/sveta/unitn/hlt/CSTLemma'
+data_dir = './wikipedia_data'
+cstlemma_dir = './cstlemma'
 vectors_dir = './vectors'
-nl_ru_dict = ''
+dicts_dir = './dictionaries'
 
 #gensim word2vec parameters:
 gensim_config = {

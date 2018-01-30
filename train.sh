@@ -32,6 +32,11 @@ python3 unsupervised.py \
 #TODO: write evaluation script
 echo "Step 3: Evaluating on Russian-Dutch dictionary."
 cd $wd
-python3 create_dict.py --en-nl $nl_dict --en-ru $ru_dict --nl-ru $nl_ru_dict
+if [ ! -f $wd/$dictionaries/nl-ru.txt ] || [ ! -f $wd/$dictionaries/ru-nl.txt ]; then
+    python3 create_dict.py \
+        --en_nl $dictionaries/en-nl.txt \
+        --en_ru $dictionaries/en-ru.txt \
+        --directory=$dictionaries
+fi
 
 exit 0 #to exit the virtualenv subshell
