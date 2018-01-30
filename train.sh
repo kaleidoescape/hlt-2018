@@ -8,8 +8,8 @@
 . ./env/bin/activate
 
 wd=`pwd`
-if [ ! -d $wd/$wikipedia_data ] &&  [ ! -f $wd/$vectors_dir/nl_vectors.txt ] || [ ! -f $wd/$vectors_dir/ru_vectors.txt ]; then
-    echo "Step 1: No Wikipedia data or pre-trained word vectors found."
+if [ ! -d $wd/$wikipedia_data ] &&  [ ! -f $wd/$vectors_dir/nl_vectors.txt ] && [ ! -f $wd/$vectors_dir/ru_vectors.txt ]; then
+    echo "Step 1: No Wikipedia data or pre-trained word vectors found. Exiting."
     exit 1
 elif [ ! -f $wd/$vectors_dir/nl_vectors.txt ] || [ ! -f $wd/$vectors_dir/ru_vectors.txt ]; then
     echo "Step 1: Training language specific vectors with gensim."

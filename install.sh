@@ -54,7 +54,5 @@ else
     echo "Wikipedia data already exists in: $wikipedia_data"
 fi
 
-
-
 echo "Installation completed."
 exit 0 #to exit the virtualenv subshell
