@@ -27,7 +27,15 @@ def parse_args():
     parser.add_argument('--directory',
         type=str, 
         default=w2vconfig.dicts_dir,
-        help='where to create the new Dutch-Russian dictionary or dictionaries')
+        help='where to create the new dictionary or dictionaries')
+    parser.add_argument('--save_merged',
+        type=bool, 
+        default=True,
+        help='Create a merged en-nl-ru dictionary if set to True')
+    parser.add_argument('--load_merged',
+        type=str, 
+        default=w2vconfig.dicts_dir + 'merged.txt',
+        help='Load a previously stored merged en-nl-ru dictionary')
     parser.add_argument('--nl_ru',
         type=bool, 
         default=True,
@@ -36,8 +44,17 @@ def parse_args():
         type=bool, 
         default=True,
         help='Create a Russian to Dutch dictionary if set to True')
+    parser.add_argument('--minimum',
+        type=int,
+        default=0,
+        help='Create a dictionary starting from the n\'th lemma in the English dictionary')
+    parser.add_argument('--maximum',
+        type=int,
+        default=-1,
+        help='Create a dictionary ending after the n\'th lemma in the English dictionary (-1 for end of dictionary')
     args = parser.parse_args()
     return args
+
 
 def load_dict(src_tar_fp):
     d = {}
@@ -54,6 +71,7 @@ def load_dict(src_tar_fp):
                 d[src_word].append(tar_word)
     return d
 
+
 def merge_dicts(dict_a, dict_b):
     merged = {}
     for word in dict_b:
@@ -66,17 +84,11 @@ def merge_dicts(dict_a, dict_b):
             continue
         else:
             merged[word] = [dict_a[word], dict_b[word]]
+            
     return merged
-
-
-if __name__ == '__main__':
-    args = parse_args()
-    r = Mystem()
-    en_nl_fp = args.en_nl
-    en_ru_fp = args.en_ru
-    en_nl = load_dict(en_nl_fp)
-    en_ru = load_dict(en_ru_fp)
-    merged = merge_dicts(en_nl, en_ru)
+    
+    
+def generate_triplets(merged):
     triplets = [] # changed this to a list to keep the dicts "roughly" sorted on freq info (assuming that the 
                   # translations of English words are roughly as frequent as the English words, which is needed for MUSE
     for en_word in merged:
@@ -91,19 +103,82 @@ if __name__ == '__main__':
                     ru_word = r.lemmatize(ru_word)[0]
                     if (nl_word, ru_word, en_word) not in triplets:
                         triplets.append((nl_word, ru_word, en_word))
+                        
+    return triplets
+   
+    
+def load_triplets(fp):
+    triplets = []
+    with open(fp, 'r', encoding='utf-8') as infp:
+        for line in infp:
+            en_word, nl_word, ru_word = line.split()
+            triplets.append((nl_word, ru_word, en_word))
+            
+    return triplets
+    
+    
+def save_triplets(fp, triplets):
+    with open(fp, 'w', encoding='utf-8') as outfp:
+        for triplet in triplets:
+            outfp.write('{} {} {}\n'.format(triplet[2], triplet[0], triplet[1]))
+
+        
+if __name__ == '__main__':
+    args = parse_args()
+    if args.maximum != -1:
+       assert args.minimum < args.maximum
+    r = Mystem()
+    en_nl_fp = args.en_nl
+    en_ru_fp = args.en_ru
+    en_nl = load_dict(en_nl_fp)
+    en_ru = load_dict(en_ru_fp)
+    
+    if os.path.isfile(args.load_merged):
+        triplets = load_triplets(args.load_merged)
+    else:
+        merged = merge_dicts(en_nl, en_ru)
+        triplets = generate_triplets(merged)
+        print(args.merged)
+        if args.merged:
+            fp = os.path.join(args.directory, 'merged.txt')
+            save_triplets(fp, triplets)
+        
+    
+    # Keep track of many lemmas have been stored in dictionary 
+    if args.maximum == -1:
+        maximum = len(triplets)               
+    elif args.maximum < len(triplets):                
+        maximum = args.maximum
+    else:
+        maximum = len(triplets)
+    minimum = args.minimum
+    
     if args.nl_ru:
+        seen_lemmas = set()
         fp = os.path.join(args.directory, 'nl-ru.txt')
         with open(fp, 'w', encoding='utf-8') as outfp:
-            for triplet in triplets:
-                outfp.write('{}\t{}\n'.format(triplet[0], triplet[1])) 
+            i=minimum
+            count = minimum
+            while count < maximum:
+                outfp.write('{}\t{}\n'.format(triplets[i][0], triplets[i][1])) 
+                if triplets[i][0] not in seen_lemmas:
+                    count += 1
+                    seen_lemmas.add(triplets[i][0])
+                else:
+                    print(triplets[i][0])
+                i += 1
+                    
     if args.ru_nl:
+        seen_lemmas = set()
+        count = args.minimum
         fp = os.path.join(args.directory, 'ru-nl.txt')
         with open(fp, 'w', encoding='utf-8') as outfp:
-            for triplet in triplets:
-                outfp.write('{}\t{}\n'.format(triplet[1], triplet[0])) 
-   
-            
-            
-#with open(args.filepath+'nl-ru.txt', 'w', encoding='utf-8') as outfp:
-#        for triplet in triplets:
-#            outfp.write('{} {}\n'.format(triplet[2], triplet[0], triplet[1])) 
+            i=minimum
+            count = minimum
+            while count < maximum:
+                outfp.write('{}\t{}\n'.format(triplets[i][1], triplets[i][0])) 
+                if not triplets[i][1] in seen_lemmas:
+                    count += 1
+                    seen_lemmas.add(triplets[i][1])
+                i += 1
+    
