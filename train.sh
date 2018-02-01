@@ -29,17 +29,11 @@ cd $wd/MUSE
 python3 unsupervised.py \
     --src_lang nl \
     --tgt_lang ru \
-    --src_emb $wd/$vectors_dir/nl_vectors.txt \
-    --tgt_emb $wd/$vectors_dir/ru_vectors.txt
+    --src_emb ../vectors/nl_vectors.txt \
+    --tgt_emb ../vectors/ru_vectors.txt \
 
-#TODO: write evaluation script
-echo "Step 3: Evaluating on Russian-Dutch dictionary."
-cd $wd
-if [ ! -f $wd/$dictionaries/nl-ru.txt ] || [ ! -f $wd/$dictionaries/ru-nl.txt ]; then
-    python3 create_dict.py \
-        --en_nl $dictionaries/en-nl.txt \
-        --en_ru $dictionaries/en-ru.txt \
-        --directory=$dictionaries
-fi
+
+#TODO: create evaluation script or use MUSE's?
+echo "Step 3: Evaluating performance."
 
 exit 0 #to exit the virtualenv subshell

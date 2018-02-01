@@ -2,4 +2,4 @@
 wikipedia_data=./wikipedia_data
 cstlemma_dir=./cstlemma
 vectors_dir=./vectors
-dictionaries=./dictionaries
+dictionaries=./MUSE/data/crosslingual/dictionaries

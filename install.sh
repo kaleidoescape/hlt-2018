@@ -45,6 +45,29 @@ else
     echo "Pre-trained word vectors already exist: $vectors_dir"
 fi
 
+cd $wd
+if [ ! -d $dictionaries ]; then
+    #nl-ru.txt
+    #nl-ru.0-5000.txt
+    #nl-ru.5000-65000.txt
+
+    echo "Creating Russian/Dutch evaluation dictionaries."
+    python3 create_dict.py \
+        --en_nl $dictionaries/en-nl.txt \
+        --en_ru $dictionaries/en-ru.txt \
+        --directory=$dictionaries \
+        --minimum 0 \
+        --maximum 5000
+    python3 create_dict.py \
+        --en_nl $dictionaries/en-nl.txt \
+        --en_ru $dictionaries/en-ru.txt \
+        --directory=$dictionaries \
+        --minimum 0 \
+        --maximum 5000
+else
+    echo "Russian/Dutch evaluation dictionaries already exist: $dictionaries"
+fi
+
 #TODO it an option to run the training on this data rather than on pre-trained vectors
 if [ ! -d $wikipedia_data ]; then
     echo "Downloading Wikipedia data."
