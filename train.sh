@@ -8,16 +8,16 @@
 . ./env/bin/activate
 
 wd=`pwd`
-if [ ! -d $wd/$wikipedia_data ] &&  [ ! -f $wd/$vectors_dir/nl_vectors.txt ] && [ ! -f $wd/$vectors_dir/ru_vectors.txt ]; then
+if [ ! -d $wikipedia_data ] &&  [ ! -f $vectors_dir/nl_vectors.txt ] && [ ! -f $vectors_dir/ru_vectors.txt ]; then
     echo "Step 1: No Wikipedia data or pre-trained word vectors found. Exiting."
     exit 1
-elif [ ! -f $wd/$vectors_dir/nl_vectors.txt ] || [ ! -f $wd/$vectors_dir/ru_vectors.txt ]; then
+elif [ ! -f $vectors_dir/nl_vectors.txt ] || [ ! -f $vectors_dir/ru_vectors.txt ]; then
     echo "Step 1: Training language specific vectors with gensim."
-    mkdir -p $wd/$vectors_dir
+    mkdir -p $vectors_dir
     python3 w2v.py \
-        --data_dir $wd/$wikipedia_data \
-        --cstlemma_dir $wd/$cstlemma_dir \
-        --vectors_dir $wd/$vectors_dir
+        --data_dir $wikipedia_data \
+        --cstlemma_dir $cstlemma_dir \
+        --vectors_dir $vectors_dir
     
 else
     echo "Step 1: Previously trained language specific vectors found."
