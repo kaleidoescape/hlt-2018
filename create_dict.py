@@ -29,21 +29,21 @@ def parse_args():
         default=w2vconfig.dicts_dir,
         help='where to create the new dictionary or dictionaries')
     parser.add_argument('--save_merged',
-        type=bool, 
-        default=True,
-        help='Create a merged en-nl-ru dictionary if set to True')
+        type=str, 
+        default=w2vconfig.dicts_dir + 'merged.txt',
+        help='File name where to store en-nl-ru dictionary (no, if no dictionary should be created')
     parser.add_argument('--load_merged',
         type=str, 
         default=w2vconfig.dicts_dir + 'merged.txt',
         help='Load a previously stored merged en-nl-ru dictionary')
     parser.add_argument('--nl_ru',
-        type=bool, 
-        default=True,
-        help='Create a Dutch to Russian dictionary if set to True')
+        type=str, 
+        default='no',
+        help='File name where to store nl-ru dictionary (no, if no dictionary should be created')
     parser.add_argument('--ru_nl',
-        type=bool, 
-        default=True,
-        help='Create a Russian to Dutch dictionary if set to True')
+        type=str, 
+        default='no',
+        help='File name where to store ru-nl dictionary (no, if no dictionary should be created')
     parser.add_argument('--minimum',
         type=int,
         default=0,
@@ -138,9 +138,9 @@ if __name__ == '__main__':
     else:
         merged = merge_dicts(en_nl, en_ru)
         triplets = generate_triplets(merged)
-        print(args.merged)
-        if args.merged:
-            fp = os.path.join(args.directory, 'merged.txt')
+        
+        if args.merged != 'no':
+            fp = os.path.join(args.directory, args.merged)
             save_triplets(fp, triplets)
         
     
@@ -153,29 +153,27 @@ if __name__ == '__main__':
         maximum = len(triplets)
     minimum = args.minimum
     
-    if args.nl_ru:
+    if args.nl_ru != 'no':
         seen_lemmas = set()
-        fp = os.path.join(args.directory, 'nl-ru.txt')
+        fp = os.path.join(args.directory, args.nl_ru)
         with open(fp, 'w', encoding='utf-8') as outfp:
             i=minimum
             count = minimum
-            while count < maximum:
+            while count < maximum and i < len(triplets):
                 outfp.write('{}\t{}\n'.format(triplets[i][0], triplets[i][1])) 
-                if triplets[i][0] not in seen_lemmas:
+                if not triplets[i][1] in seen_lemmas:
                     count += 1
                     seen_lemmas.add(triplets[i][0])
-                else:
-                    print(triplets[i][0])
                 i += 1
                     
-    if args.ru_nl:
+    if args.ru_nl != 'no':
         seen_lemmas = set()
         count = args.minimum
-        fp = os.path.join(args.directory, 'ru-nl.txt')
+        fp = os.path.join(args.directory, args.ru_nl)
         with open(fp, 'w', encoding='utf-8') as outfp:
             i=minimum
             count = minimum
-            while count < maximum:
+            while count < maximum and i < len(triplets):
                 outfp.write('{}\t{}\n'.format(triplets[i][1], triplets[i][0])) 
                 if not triplets[i][1] in seen_lemmas:
                     count += 1
