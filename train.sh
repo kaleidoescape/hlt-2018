@@ -18,6 +18,7 @@ elif [ ! -f $vectors_dir/nl_vectors.txt ] || [ ! -f $vectors_dir/ru_vectors.txt 
         --data_dir $wikipedia_data \
         --cstlemma_dir $cstlemma_dir \
         --vectors_dir $vectors_dir
+        
     
 else
     echo "Step 1: Previously trained language specific vectors found."
@@ -25,12 +26,36 @@ fi
 
 #TODO this step doesn't work yet
 echo "Step 2: Training correspondences with MUSE."
+python3 create_dict.py \
+    --nl_ru $dicts_muse_dir/nl-ru.txt \
+    --ru_nl $dicts_muse_dir/ru-nl.txt \
+    
+python3 create_dict.py \
+    --nl_ru $dicts_muse_dir/nl-ru.0-5000.txt \
+    --ru_nl $dicts_muse_dir/ru-nl.0-5000.txt \
+    --minimum 0 
+    --maximum 5000 
+    
+python3 create_dict.py \
+    --nl_ru $dicts_muse_dir/nl-ru.5000-6500.txt \
+    --ru_nl $dicts_muse_dir/ru-nl.5000-6500.txt \
+    --minimum 5000 
+    --maximum 6500 
+    
+
 cd $wd/MUSE
 python3 unsupervised.py \
     --src_lang nl \
     --tgt_lang ru \
     --src_emb ../vectors/nl_vectors.txt \
     --tgt_emb ../vectors/ru_vectors.txt \
+    --cuda "False" \
+    --refinement "True" \
+    --max_vocab 35000 \
+    --dis_most_frequent 35000 \
+    --epoch_size 10000 \ 
+    --n_epochs 1 \ 
+
 
 
 #TODO: create evaluation script or use MUSE's?
