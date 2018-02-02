@@ -115,7 +115,7 @@ class SentenceGenerator(object):
             w = re.sub(regex, self.NUM, w)    #replace numbers
             if w in self.PUNCTUATION or not w:  
                 continue              #remove !"#$%&'()*+,-./:;<=>?@[\]^_`{|}~
-            if not w.isalpha() or len(w) > 1: #replace non-alphabetic words or
+            if not w.isalpha() or len(w.split()) > 1: #replace non-alphabetic words or
                 w = self.UNK                  #words with spaces inside w/ UNK
             tokens.append(w)
             self.word_token_count += 1
