@@ -25,6 +25,7 @@ chmod +x ./makecstlemma.bash
 wget -O $cstlemma_dir/flexrules.dutch http://ada.sc.ku.dk/download/cstlemma/dutch/flexrules
 
 echo "Downloading MUSE."
+cd $wd
 git clone git@github.com:facebookresearch/MUSE.git
 
 #Have to create them after MUSE installation
