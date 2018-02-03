@@ -19,9 +19,9 @@ echo "Downloading Dutch lemmatizer."
 mkdir -p $cstlemma_dir
 cd $cstlemma_dir
 wget -O makecstlemma.bash https://raw.githubusercontent.com/kuhumcst/cstlemma/master/doc/makecstlemma.bash
-wget -O $cstlemma_dir/flexrules.dutch http://ada.sc.ku.dk/download/cstlemma/dutch/flexrules
 chmod +x ./makecstlemma.bash
 ./makecstlemma.bash
+wget -O $cstlemma_dir/flexrules.dutch http://ada.sc.ku.dk/download/cstlemma/dutch/flexrules
 
 echo "Creating Dutch/Russian dictionaries."
 cd $wd
@@ -49,12 +49,13 @@ fi
 
 
 #TODO it an option to run the training on this data rather than on pre-trained vectors
-if [ ! -d $wikipedia_data ]; then
+if [ ! -d $wikipedia_data ] || [ ! -d $vectors_dir ]; then
     echo "Downloading Wikipedia data."
     wget -O wikipedia_data.zip https://www.dropbox.com/s/a6qihkjp385d7zw/wikipedia_data.zip?dl=1
     unzip wikipedia_data.zip -d $wikipedia_data
 else
-    echo "Wikipedia data already exists in: $wikipedia_data"
+    echo "Found pre-trained word vectors. Downloading Wikipedia data, but not bothering to unpack it."
+    wget -O wikipedia_data.zip https://www.dropbox.com/s/a6qihkjp385d7zw/wikipedia_data.zip?dl=1
 fi
 
 echo "Installation completed."
