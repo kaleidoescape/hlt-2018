@@ -24,10 +24,6 @@ def parse_args():
         type=str, 
         default=w2vconfig.dicts_dir + 'en-ru.txt',
         help='file path to English-Russian dictionary')
-    parser.add_argument('--directory',
-        type=str, 
-        default=w2vconfig.dicts_dir,
-        help='where to create the new dictionary or dictionaries')
     parser.add_argument('--save_merged',
         type=str, 
         default=w2vconfig.dicts_dir + 'merged.txt',
@@ -139,9 +135,8 @@ if __name__ == '__main__':
         merged = merge_dicts(en_nl, en_ru)
         triplets = generate_triplets(merged)
         
-        if args.merged != 'no':
-            fp = os.path.join(args.directory, args.merged)
-            save_triplets(fp, triplets)
+        if args.save_merged != 'no':
+            save_triplets(args.save_merged, triplets)
         
     
     # Keep track of many lemmas have been stored in dictionary 
@@ -155,7 +150,7 @@ if __name__ == '__main__':
     
     if args.nl_ru != 'no':
         seen_lemmas = set()
-        fp = os.path.join(args.directory, args.nl_ru)
+        fp = os.path.join(args.nl_ru)
         with open(fp, 'w', encoding='utf-8') as outfp:
             i=minimum
             count = minimum
@@ -169,7 +164,7 @@ if __name__ == '__main__':
     if args.ru_nl != 'no':
         seen_lemmas = set()
         count = args.minimum
-        fp = os.path.join(args.directory, args.ru_nl)
+        fp = os.path.join(args.ru_nl)
         with open(fp, 'w', encoding='utf-8') as outfp:
             i=minimum
             count = minimum
