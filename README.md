@@ -7,11 +7,11 @@ https://arxiv.org/pdf/1710.04087.pdf
 
 ## Dependencies
 
-- python3 with virtualenv and pip
+- python3 with virtualenv 
+- PyTorch
 
 The rest of the dependencies will be downloaded automatically as needed during installation and include (but are not limited to):
  
-- pytorch
 - gensim
 - nltk
 - MUSE 
@@ -32,6 +32,8 @@ The articles and a list of their titles that were used to train these vectors wi
 The install script will automatically download and install all the necessary dependencies. (Note that this could take a long time, particularly if pytorch needs to be installed.)
 
 ```
+git clone git@github.com:kaleidoescape/hlt-2018.git
+cd hlt-e018
 ./install.sh
 ```
 

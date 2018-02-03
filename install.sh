@@ -8,9 +8,9 @@ virtualenv -p python3 env
 chmod +x . ./env/bin/activate
 . ./env/bin/activate
 
-echo "Installing pytorch."
-pip3 install http://download.pytorch.org/whl/cu80/torch-0.3.0.post4-cp35-cp35m-linux_x86_64.whl 
-pip3 install torchvision
+#echo "Installing pytorch."
+#pip3 install http://download.pytorch.org/whl/cu80/torch-0.3.0.post4-cp35-cp35m-linux_x86_64.whl 
+#pip3 install torchvision
 
 echo "Installing other requirements."
 pip3 install -r requirements.txt
@@ -39,7 +39,7 @@ fi
 echo "Downloading MUSE."
 git clone git@github.com:facebookresearch/MUSE.git
 
-if [ ! -d $vectors ]; then
+if [ ! -d $vectors_dir ]; then
     echo "Downloading pre-trained word vectors."
     wget -O vectors.zip https://www.dropbox.com/s/nl7bwt5rnf0jhsz/vectors.zip?dl=1
     unzip vectors.zip -d $vectors_dir
