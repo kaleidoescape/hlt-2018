@@ -42,7 +42,7 @@ git clone git@github.com:facebookresearch/MUSE.git
 if [ ! -d $vectors_dir ]; then
     echo "Downloading pre-trained word vectors."
     wget -O vectors.zip https://www.dropbox.com/s/nl7bwt5rnf0jhsz/vectors.zip?dl=1
-    unzip vectors.zip -d $vectors_dir
+    unzip vectors.zip 
 else
     echo "Pre-trained word vectors already exist: $vectors_dir"
 fi
