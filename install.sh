@@ -4,13 +4,16 @@ wd=`pwd`
 . ./dl_paths.sh #filepaths to install things to
 
 echo "Activating python3 virtualenv."
-virtualenv -p python3 env
-chmod +x . ./env/bin/activate
-. ./env/bin/activate
-
-#echo "Installing pytorch."
-#pip3 install http://download.pytorch.org/whl/cu80/torch-0.3.0.post4-cp35-cp35m-linux_x86_64.whl 
-#pip3 install torchvision
+if [ ! -d $venv ]; then
+    virtualenv -p python3 env
+    chmod +x . ./env/bin/activate
+    . ./env/bin/activate
+    echo "Installing pytorch to virtualenv in $venv"
+    pip3 install http://download.pytorch.org/whl/cu80/torch-0.3.0.post4-cp35-cp35m-linux_x86_64.whl 
+    pip3 install torchvision
+else
+    . $venv/bin/activate
+fi
 
 echo "Installing other requirements."
 pip3 install -r requirements.txt

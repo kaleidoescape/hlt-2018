@@ -2,10 +2,7 @@
 
 . ./dl_paths.sh #file paths of necessary training files
 
-#spawn a subshell for the virtualenv; it won't show the (env) prefix though
-#/bin/bash -c ". ./env/bin/activate; exec /bin/bash -i"
-
-. ./env/bin/activate
+. $venv/bin/activate
 
 wd=`pwd`
 if [ ! -d $wikipedia_data ] &&  [ ! -f $vectors_dir/nl_vectors.txt ] && [ ! -f $vectors_dir/ru_vectors.txt ]; then
