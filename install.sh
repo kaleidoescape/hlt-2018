@@ -44,11 +44,15 @@ if [ ! -d $vectors_dir ]; then
     echo "Downloading pre-trained word vectors."
     wget -O vectors.zip https://www.dropbox.com/s/nl7bwt5rnf0jhsz/vectors.zip?dl=1
     unzip vectors.zip 
+    # English fastText Wikipedia embeddings
+    curl -Lo $vectors_dir/wiki.nl.vec https://s3-us-west-1.amazonaws.com/fasttext-vectors/wiki.nl.vec
+    # Spanish fastText Wikipedia embeddings
+    curl -Lo $vectors_dir/wiki.ru.vec https://s3-us-west-1.amazonaws.com/fasttext-vectors/wiki.ru.vec
 else
     echo "Pre-trained word vectors already exist: $vectors_dir"
 fi
 
-if [ ! -d $wikipedia_data ] || [ ! -d $vectors_dir ]; then
+if [ ! -d $wikipedia_data ] && [ ! -d $vectors_dir ]; then
     echo "Downloading Wikipedia data."
     wget -O wikipedia_data.zip https://www.dropbox.com/s/a6qihkjp385d7zw/wikipedia_data.zip?dl=1
     unzip wikipedia_data.zip -d $wikipedia_data
