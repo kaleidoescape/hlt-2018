@@ -24,6 +24,10 @@ chmod +x ./makecstlemma.bash
 #Have to download this file after make
 wget -O $cstlemma_dir/flexrules.dutch http://ada.sc.ku.dk/download/cstlemma/dutch/flexrules
 
+echo "Downloading MUSE."
+git clone git@github.com:facebookresearch/MUSE.git
+
+#Have to create them after MUSE installation
 echo "Creating Dutch/Russian dictionaries."
 cd $wd
 mkdir -p $dictionaries
@@ -35,10 +39,6 @@ if [ ! -f $dictionaries/en-ru.txt ]; then
     echo "Downloading en-ru dictionary."
     wget -O $dictionaries/en-ru.txt https://s3.amazonaws.com/arrival/dictionaries/en-ru.txt
 fi
-
-
-echo "Downloading MUSE."
-git clone git@github.com:facebookresearch/MUSE.git
 
 if [ ! -d $vectors_dir ]; then
     echo "Downloading pre-trained word vectors."

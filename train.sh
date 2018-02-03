@@ -57,7 +57,7 @@ python3 unsupervised.py \
     --refinement "True" \
     --max_vocab 35000 \
     --dis_most_frequent 35000 \
-    --epoch_size 10000 \
+    --epoch_size 500000 \
     --n_epochs 1
 
 
