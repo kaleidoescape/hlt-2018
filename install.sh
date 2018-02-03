@@ -21,6 +21,7 @@ cd $cstlemma_dir
 wget -O makecstlemma.bash https://raw.githubusercontent.com/kuhumcst/cstlemma/master/doc/makecstlemma.bash
 chmod +x ./makecstlemma.bash
 ./makecstlemma.bash
+#Have to download this file after make
 wget -O $cstlemma_dir/flexrules.dutch http://ada.sc.ku.dk/download/cstlemma/dutch/flexrules
 
 echo "Creating Dutch/Russian dictionaries."
@@ -47,15 +48,12 @@ else
     echo "Pre-trained word vectors already exist: $vectors_dir"
 fi
 
-
-#TODO it an option to run the training on this data rather than on pre-trained vectors
 if [ ! -d $wikipedia_data ] || [ ! -d $vectors_dir ]; then
     echo "Downloading Wikipedia data."
     wget -O wikipedia_data.zip https://www.dropbox.com/s/a6qihkjp385d7zw/wikipedia_data.zip?dl=1
     unzip wikipedia_data.zip -d $wikipedia_data
 else
-    echo "Found pre-trained word vectors. Downloading Wikipedia data, but not bothering to unpack it."
-    wget -O wikipedia_data.zip https://www.dropbox.com/s/a6qihkjp385d7zw/wikipedia_data.zip?dl=1
+    echo "Found pre-trained word vectors. Not bothering to download Wikipedia data." 
 fi
 
 echo "Installation completed."
