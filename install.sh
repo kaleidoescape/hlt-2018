@@ -19,10 +19,11 @@ echo "Downloading Dutch lemmatizer."
 mkdir -p $cstlemma_dir
 cd $cstlemma_dir
 wget -O makecstlemma.bash https://raw.githubusercontent.com/kuhumcst/cstlemma/master/doc/makecstlemma.bash
-wget -O flexrules.dutch http://ada.sc.ku.dk/download/cstlemma/dutch/flexrules
+wget -O $cstlemma_dir/flexrules.dutch http://ada.sc.ku.dk/download/cstlemma/dutch/flexrules
 chmod +x ./makecstlemma.bash
 ./makecstlemma.bash
 
+echo "Creating Dutch/Russian dictionaries."
 cd $wd
 mkdir -p $dictionaries
 if [ ! -f $dictionaries/en-nl.txt ]; then
@@ -33,6 +34,7 @@ if [ ! -f $dictionaries/en-ru.txt ]; then
     echo "Downloading en-ru dictionary."
     wget -O $dictionaries/en-ru.txt https://s3.amazonaws.com/arrival/dictionaries/en-ru.txt
 fi
+
 
 echo "Downloading MUSE."
 git clone git@github.com:facebookresearch/MUSE.git
@@ -45,28 +47,6 @@ else
     echo "Pre-trained word vectors already exist: $vectors_dir"
 fi
 
-cd $wd
-if [ ! -d $dictionaries ]; then
-    #nl-ru.txt
-    #nl-ru.0-5000.txt
-    #nl-ru.5000-65000.txt
-
-    echo "Creating Russian/Dutch evaluation dictionaries."
-    python3 create_dict.py \
-        --en_nl $dictionaries/en-nl.txt \
-        --en_ru $dictionaries/en-ru.txt \
-        --directory=$dictionaries \
-        --minimum 0 \
-        --maximum 5000
-    python3 create_dict.py \
-        --en_nl $dictionaries/en-nl.txt \
-        --en_ru $dictionaries/en-ru.txt \
-        --directory=$dictionaries \
-        --minimum 0 \
-        --maximum 5000
-else
-    echo "Russian/Dutch evaluation dictionaries already exist: $dictionaries"
-fi
 
 #TODO it an option to run the training on this data rather than on pre-trained vectors
 if [ ! -d $wikipedia_data ]; then
