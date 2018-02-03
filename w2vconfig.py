@@ -1,8 +1,7 @@
 data_dir = './wikipedia_data/'
 cstlemma_dir = './cstlemma/'
 vectors_dir = './vectors/'
-dicts_muse_dir = './MUSE/data/crosslingual/dictionaries/'
-dicts_dir = './dictionaries/'
+dicts_dir = './MUSE/data/crosslingual/dictionaries/'
 
 #gensim word2vec parameters:
 gensim_config = {

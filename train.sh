@@ -24,25 +24,27 @@ else
     echo "Step 1: Previously trained language specific vectors found."
 fi
 
+echo "Step 2: Making Russian/Dutch dictionaries."
+mkdir -p $dictionaries
 #TODO this step doesn't work yet
-echo "Step 2: Training correspondences with MUSE."
 python3 create_dict.py \
-    --nl_ru $dicts_muse_dir/nl-ru.txt \
-    --ru_nl $dicts_muse_dir/ru-nl.txt \
+    --nl_ru $dictionaries/nl-ru.txt \
+    --ru_nl $dictionaries/ru-nl.txt 
     
 python3 create_dict.py \
-    --nl_ru $dicts_muse_dir/nl-ru.0-5000.txt \
-    --ru_nl $dicts_muse_dir/ru-nl.0-5000.txt \
-    --minimum 0 
+    --nl_ru $dictionaries/nl-ru.0-5000.txt \
+    --ru_nl $dictionaries/ru-nl.0-5000.txt \
+    --minimum 0 \
     --maximum 5000 
     
 python3 create_dict.py \
-    --nl_ru $dicts_muse_dir/nl-ru.5000-6500.txt \
-    --ru_nl $dicts_muse_dir/ru-nl.5000-6500.txt \
-    --minimum 5000 
+    --nl_ru $dictionaries/nl-ru.5000-6500.txt \
+    --ru_nl $dictionaries/ru-nl.5000-6500.txt \
+    --minimum 5000 \
     --maximum 6500 
     
 
+echo "Step 3: Training correspondences with MUSE."
 cd $wd/MUSE
 python3 unsupervised.py \
     --src_lang nl \
@@ -53,12 +55,12 @@ python3 unsupervised.py \
     --refinement "True" \
     --max_vocab 35000 \
     --dis_most_frequent 35000 \
-    --epoch_size 10000 \ 
-    --n_epochs 1 \ 
+    --epoch_size 10000 \
+    --n_epochs 1
 
 
 
 #TODO: create evaluation script or use MUSE's?
-echo "Step 3: Evaluating performance."
+echo "Step 4: Evaluating performance."
 
 exit 0 #to exit the virtualenv subshell
