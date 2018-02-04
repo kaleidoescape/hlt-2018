@@ -24,8 +24,8 @@ fi
 if [ ! -f $dictionaries/nl-ru.txt ] || [ ! -f $dictionaries/ru-nl.txt ]; then
     echo "Step 2: Making Dutch/Russian dictionaries."
     python3 create_dict.py \
-        --nl_ru $dictionaries/nl-ru.txt \
-        --ru_nl $dictionaries/ru-nl.txt 
+        --nl_ru $dictionaries/nl-ru \
+        --ru_nl $dictionaries/ru-nl 
 else
    echo "Step 2: Previously created Dutch/Russian dictionaries found."
 fi

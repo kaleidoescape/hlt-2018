@@ -19,21 +19,15 @@ def parse_args():
     parser = AlterParser(prog='create_dict.py', 
             description='Create a Dutch-Russian dictionary from English-Dutch and English-Russian ones.')
     parser.add_argument('--en_nl',
-        type=str, 
         default=w2vconfig.dicts_dir + 'en-nl.txt',
         help='file path to English-Dutch dictionary')
     parser.add_argument('--en_ru',
-        type=str, 
         default=w2vconfig.dicts_dir + 'en-ru.txt',
         help='file path to English-Russian dictionary')
     parser.add_argument('--nl_ru',
-        type=str, 
-        default='no',
-        help='File name where to store nl-ru dictionary (no, if no dictionary should be created')
+        help='File name where to store nl-ru dictionary (without file extension)')
     parser.add_argument('--ru_nl',
-        type=str, 
-        default='no',
-        help='File name where to store ru-nl dictionary (no, if no dictionary should be created')
+        help='File name where to store ru-nl dictionary (without file extension)')
     args = parser.parse_args()
     return args
 
@@ -122,8 +116,8 @@ def create_5000_6500(triplets):
                         ru_nl_fp.write('{} {}\n'.format(ru, nl))
 
 def create_dicts(triplets):
-    with open(args.nl_ru, 'w', encoding='utf-8') as nl_ru_fp:
-        with open(args.ru_nl, 'w', encoding='utf-8') as ru_nl_fp:
+    with open(args.nl_ru + '.txt', 'w', encoding='utf-8') as nl_ru_fp:
+        with open(args.ru_nl + '.txt', 'w', encoding='utf-8') as ru_nl_fp:
             for triplet in triplets:
                 nl = triplet[0].strip()
                 ru = triplet[1].strip()
