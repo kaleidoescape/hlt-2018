@@ -26,18 +26,6 @@ if [ ! -f $dictionaries/nl-ru.txt ] || [ ! -f $dictionaries/ru-nl.txt ]; then
     python3 create_dict.py \
         --nl_ru $dictionaries/nl-ru.txt \
         --ru_nl $dictionaries/ru-nl.txt 
-        
-    #python3 create_dict.py \
-    #    --nl_ru $dictionaries/nl-ru.0-5000.txt \
-    #    --ru_nl $dictionaries/ru-nl.0-5000.txt \
-    #    --minimum 0 \
-    #    --maximum 5000 
-        
-    python3 create_dict.py \
-        --nl_ru $dictionaries/nl-ru.5000-6500.txt \
-        --ru_nl $dictionaries/ru-nl.5000-6500.txt \
-        --minimum 5000 \
-        --maximum 6500 
 else
    echo "Step 2: Previously created Dutch/Russian dictionaries found."
 fi
@@ -45,17 +33,8 @@ fi
 
 echo "Step 3: Training correspondences with MUSE."
 cd $wd/MUSE
-python3 unsupervised.py \
-    --src_lang nl \
-    --tgt_lang ru \
-    --src_emb ../vectors/nl_vectors.txt \
-    --tgt_emb ../vectors/ru_vectors.txt \
-    --cuda "True" \
-    --refinement "True" \
-    --max_vocab 35000 \
-    --dis_most_frequent 35000 \
-    --epoch_size 500000 \
-    --n_epochs 1
+python3 unsupervised.py --src_lang nl --tgt_lang ru --src_emb ../vectors/nl_vectors.txt --tgt_emb ../vectors/ru_vectors.txt --cuda True --max_vocab 35000 --dis_most_frequent 35000 --refinement True --epoch_size 200000
 
+python3 unsupervised.py --src_lang ru --tgt_lang nl --src_emb ../vectors/ru_vectors.txt --tgt_emb ../vectors/nl_vectors.txt --cuda True --max_vocab 35000 --dis_most_frequent 35000 --refinement True --epoch_size 200000
 
 exit 0 #to exit the virtualenv subshell
