@@ -1,5 +1,8 @@
 #!/bin/bash
 
+get_fastText=0  #download Facebook fastText vectors (time consuming)
+get_wikipedia=0 #download Wikipedia comparable corpora (time consuming)
+
 wd=`pwd`
 . ./dl_paths.sh #filepaths to install things to
 
@@ -44,19 +47,26 @@ if [ ! -f $dictionaries/en-ru.txt ]; then
     wget -O $dictionaries/en-ru.txt https://s3.amazonaws.com/arrival/dictionaries/en-ru.txt
 fi
 
-if [ ! -d $vectors_dir ]; then
+if [ ! -d $vectors_dir/nl_vectors.txt ] || [ ! -f $vectors_dir/ru_vectors.txt ]; then
     echo "Downloading pre-trained word vectors."
     wget -O vectors.zip https://www.dropbox.com/s/nl7bwt5rnf0jhsz/vectors.zip?dl=1
-    unzip vectors.zip 
-    # English fastText Wikipedia embeddings
-    curl -Lo $vectors_dir/wiki.nl.vec https://s3-us-west-1.amazonaws.com/fasttext-vectors/wiki.nl.vec
-    # Spanish fastText Wikipedia embeddings
-    curl -Lo $vectors_dir/wiki.ru.vec https://s3-us-west-1.amazonaws.com/fasttext-vectors/wiki.ru.vec
+    unzip vectors.zip
 else
     echo "Pre-trained word vectors already exist: $vectors_dir"
 fi
 
-if [ ! -d $wikipedia_data ] && [ ! -d $vectors_dir ]; then
+if [ $get_fastText > 0 ] && [ ! $vectors_dir/wiki.nl.vec ] || [ ! $vectors_dir/wiki.ru.vec ]; then
+    echo "Downloading fastText word embeddings. This will take a really long time."
+    # English fastText Wikipedia embeddings
+    curl -Lo $vectors_dir/wiki.nl.vec https://s3-us-west-1.amazonaws.com/fasttext-vectors/wiki.nl.vec
+    # Spanish fastText Wikipedia embeddings
+    curl -Lo $vectors_dir/wiki.ru.vec https://s3-us-west-1.amazonaws.com/fasttext-vectors/wiki.ru.vec
+fi
+
+echo "Cloning biwikibot."
+git clone git@github.com:kaleidoescape/biwikibot.git
+
+if [ $get_wikipedia > 0 ] && [ ! -d $wikipedia_data ] && [ ! -d $vectors_dir ]; then
     echo "Downloading Wikipedia data."
     wget -O wikipedia_data.zip https://www.dropbox.com/s/a6qihkjp385d7zw/wikipedia_data.zip?dl=1
     unzip wikipedia_data.zip -d $wikipedia_data

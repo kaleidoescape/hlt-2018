@@ -60,23 +60,23 @@ class SentenceGenerator(object):
 
         if self.filepaths is not None:
             for fp in self.filepaths:
-                if self.language == 'dutch': 
-                    text = self._get_filetext_with_cstlemma(fp)
+                #if self.language == 'dutch': 
+                #    text = self._get_filetext_with_cstlemma(fp)
+                #    sents = sent_tokenize(text) #split into sentences
+                #    for sent in sents:
+                #        self.count += 1
+                #        if self.maxsents and self.count > self.maxsents:
+                #            raise StopIteration
+                #        yield self._process_sentence(sent) 
+                #else:
+                with open(fp, 'r', encoding='utf-8') as infp:
+                    text = infp.read() 
                     sents = sent_tokenize(text) #split into sentences
                     for sent in sents:
                         self.count += 1
                         if self.maxsents and self.count > self.maxsents:
                             raise StopIteration
-                        yield self._process_sentence(sent) 
-                else:
-                    with open(fp, 'r', encoding='utf-8') as infp:
-                        text = infp.read() 
-                        sents = sent_tokenize(text) #split into sentences
-                        for sent in sents:
-                            self.count += 1
-                            if self.maxsents and self.count > self.maxsents:
-                                raise StopIteration
-                            yield self._process_sentence(sent)
+                        yield self._process_sentence(sent)
 
     def _get_filetext_with_cstlemma(self, fp):
         cmd = "{}/cstlemma/cstlemma -L -f {}/flexrules.dutch -i {}".format(self.cstlemma_dir, self.cstlemma_dir, fp)
@@ -103,10 +103,11 @@ class SentenceGenerator(object):
         regex = re.compile(r'^[$€]?(?=.)([+-]?([0-9]*)(\.([0-9]+))?)$')
         
         #split into words
-        if self.language == 'russian':
-            tokenized = self.m.lemmatize(sentence)
-        else:
-            tokenized = word_tokenize(sentence)
+        #if self.language == 'russian':
+        #    tokenized = self.m.lemmatize(sentence)
+        #else:
+        #    tokenized = word_tokenize(sentence)
+        tokenized = word_tokenize(sentence)
         
         #process into lowercased words, replacing numbers and punctuation
         tokens = []

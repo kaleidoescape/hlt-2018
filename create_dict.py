@@ -78,6 +78,21 @@ def generate_triplets(merged):
                         triplets.append((nl_word, ru_word, en_word))
     return triplets
   
+def generate_triplets_nolemma(merged):
+    triplets = [] # changed this to a list to keep the dicts "roughly" sorted on freq info (assuming that the 
+                  # translations of English words are roughly as frequent as the English words, which is needed for MUSE
+    for en_word in merged:
+        if len(merged[en_word]) < 2:
+            continue
+        nl = merged[en_word][0]
+        ru = merged[en_word][1]
+        for nl_word in nl:
+            for ru_word in ru:
+                if (nl_word, ru_word, en_word) not in triplets:
+                    triplets.append((nl_word, ru_word, en_word))
+    return triplets
+
+
 def create_5000_6500(triplets):
     """
     Create files titled nl-ru.5000-6500.txt and ru-nl.5000-6500.txt

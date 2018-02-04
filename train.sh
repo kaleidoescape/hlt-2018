@@ -33,8 +33,8 @@ fi
 
 echo "Step 3: Training correspondences with MUSE."
 cd $wd/MUSE
-python3 unsupervised.py --src_lang nl --tgt_lang ru --src_emb ../vectors/nl_vectors.txt --tgt_emb ../vectors/ru_vectors.txt --cuda True --max_vocab 35000 --dis_most_frequent 35000 --refinement True --epoch_size 200000
+python3 unsupervised.py --src_lang nl --tgt_lang ru --src_emb ../vectors/nl_vectors.txt --tgt_emb ../vectors/ru_vectors.txt --cuda True --max_vocab 35000 --dis_most_frequent 10000 --refinement True --epoch_size 50000
 
-python3 unsupervised.py --src_lang ru --tgt_lang nl --src_emb ../vectors/ru_vectors.txt --tgt_emb ../vectors/nl_vectors.txt --cuda True --max_vocab 35000 --dis_most_frequent 35000 --refinement True --epoch_size 200000
+python3 unsupervised.py --src_lang ru --tgt_lang nl --src_emb ../vectors/ru_vectors.txt --tgt_emb ../vectors/nl_vectors.txt --cuda True --max_vocab 35000 --dis_most_frequent 10000 --refinement True --epoch_size 50000
 
 exit 0 #to exit the virtualenv subshell
