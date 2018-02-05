@@ -79,14 +79,15 @@ class SentenceGenerator(object):
                                 raise StopIteration
                             yield self._process_sentence(sent)
         elif self.filepaths is not None:
-            with open(fp, 'r', encoding='utf-8') as infp:
-                text = infp.read() 
-                sents = sent_tokenize(text) #split into sentences
-                for sent in sents:
-                    self.count += 1
-                    if self.maxsents and self.count > self.maxsents:
-                        raise StopIteration
-                    yield self._process_sentence(sent)
+            for fp in self.filepaths:
+                with open(fp, 'r', encoding='utf-8') as infp:
+                    text = infp.read() 
+                    sents = sent_tokenize(text) #split into sentences
+                    for sent in sents:
+                        self.count += 1
+                        if self.maxsents and self.count > self.maxsents:
+                            raise StopIteration
+                        yield self._process_sentence(sent)
 
 
     def _get_filetext_with_cstlemma(self, fp):
