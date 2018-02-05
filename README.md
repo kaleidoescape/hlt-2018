@@ -33,7 +33,7 @@ The install script will automatically download and install all the necessary dep
 
 ```
 git clone git@github.com:kaleidoescape/hlt-2018.git
-cd hlt-e018
+cd hlt-2018
 ./install.sh
 ```
 

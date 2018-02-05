@@ -69,7 +69,7 @@ git clone git@github.com:kaleidoescape/biwikibot.git
 if [ $get_wikipedia > 0 ] && [ ! -d $wikipedia_data ] && [ ! -d $vectors_dir ]; then
     echo "Downloading Wikipedia data."
     wget -O wikipedia_data.zip https://www.dropbox.com/s/a6qihkjp385d7zw/wikipedia_data.zip?dl=1
-    unzip wikipedia_data.zip -d $wikipedia_data
+    unzip wikipedia_data.zip 
 else
     echo "Found pre-trained word vectors. Not bothering to download Wikipedia data." 
 fi
