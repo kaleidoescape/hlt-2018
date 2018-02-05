@@ -34,8 +34,8 @@ echo "Downloading MUSE."
 cd $wd
 git clone git@github.com:facebookresearch/MUSE.git
 
-#Have to create them after MUSE installation
-echo "Creating Dutch/Russian dictionaries."
+#Have to download them after MUSE installation
+echo "Downloading Dutch/Russian dictionaries."
 cd $wd
 mkdir -p $dictionaries
 if [ ! -f $dictionaries/en-nl.txt ]; then
@@ -63,10 +63,10 @@ elif [ $get_fastText > 0 ]
     if [ ! -f $vectors_dir/wiki.en.vec ]; then
         curl -Lo $vectors_dir/wiki.en.vec https://s3-us-west-1.amazonaws.com/fasttext-vectors/wiki.en.vec
     fi
-    if [ ! -f $vectors_dir/wiki.nl.vec ]; thnl
+    if [ ! -f $vectors_dir/wiki.nl.vec ]; then
         curl -Lo $vectors_dir/wiki.nl.vec https://s3-us-west-1.amazonaws.com/fasttext-vectors/wiki.nl.vec
     fi
-    if [ ! -f $vectors_dir/wiki.ru.vec ]; thru
+    if [ ! -f $vectors_dir/wiki.ru.vec ]; then
         curl -Lo $vectors_dir/wiki.ru.vec https://s3-us-west-1.amazonaws.com/fasttext-vectors/wiki.ru.vec
     fi
 fi
