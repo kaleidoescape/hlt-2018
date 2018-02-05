@@ -1,7 +1,7 @@
 #!/bin/bash
 
-get_fastText=0  #download Facebook fastText vectors (time consuming)
-get_wikipedia=0 #download Wikipedia comparable corpora (time consuming)
+get_fastText=0  #download Facebook fastText vectors (VERY time consuming)
+get_wikipedia=1 #download Wikipedia comparable corpora (time consuming)
 
 wd=`pwd`
 . ./dl_paths.sh #filepaths to install things to

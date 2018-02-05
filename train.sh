@@ -1,6 +1,6 @@
 #!/bin/bash
 
-do_baselines=0
+do_baselines=1
 
 . ./dl_paths.sh #file paths of necessary training files
 
