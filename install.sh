@@ -47,6 +47,7 @@ if [ ! -f $dictionaries/en-ru.txt ]; then
     wget -O $dictionaries/en-ru.txt https://s3.amazonaws.com/arrival/dictionaries/en-ru.txt
 fi
 
+#TODO update this
 if [ ! -d $vectors_dir/nl_vectors.txt ] || [ ! -f $vectors_dir/ru_vectors.txt ]; then
     echo "Downloading pre-trained word vectors."
     wget -O vectors.zip https://www.dropbox.com/s/nl7bwt5rnf0jhsz/vectors.zip?dl=1
@@ -73,12 +74,10 @@ fi
 echo "Cloning biwikibot."
 git clone git@github.com:kaleidoescape/biwikibot.git
 
-if [ $get_wikipedia > 0 ] && [ ! -d $wikipedia_data ] && [ ! -d $vectors_dir ]; then
+if [ $get_wikipedia > 0 ] && [ ! -d $wikipedia_data ]; then
     echo "Downloading Wikipedia data."
     wget -O wikipedia_data.zip https://www.dropbox.com/s/a6qihkjp385d7zw/wikipedia_data.zip?dl=1
     unzip wikipedia_data.zip 
-else
-    echo "Found pre-trained word vectors. Not bothering to download Wikipedia data." 
 fi
 
 echo "Installation completed."
