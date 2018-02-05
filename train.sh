@@ -64,6 +64,9 @@ if [ $do_baselines > 1 ]; then
 
     #Train baseline en-ru MUSE system to check if program works correctly
     python3 unsupervised.py --src_lang en --tgt_lang ru --src_emb ../vectors/wiki.en.vec --tgt_emb ../vectors/wiki.ru.vec --cuda True --max_vocab 35000 --dis_most_frequent 35000 --refinement True --epoch_size 100000
+    
+    #Train baseline ru_en MUSE system to check if program works correctly
+    python3 unsupervised.py --src_lang ru --tgt_lang en --src_emb ../vectors/wiki.ru.vec --tgt_emb ../vectors/wiki.en.vec --cuda True --max_vocab 35000 --dis_most_frequent 35000 --refinement True --epoch_size 100000
 fi
 
 exit 0 #to exit the virtualenv subshell
