@@ -55,12 +55,19 @@ else
     echo "Pre-trained word vectors already exist: $vectors_dir"
 fi
 
-if [ $get_fastText > 0 ] && [ ! $vectors_dir/wiki.nl.vec ] || [ ! $vectors_dir/wiki.ru.vec ]; then
-    echo "Downloading fastText word embeddings. This will take a really long time."
-    # English fastText Wikipedia embeddings
-    curl -Lo $vectors_dir/wiki.nl.vec https://s3-us-west-1.amazonaws.com/fasttext-vectors/wiki.nl.vec
-    # Spanish fastText Wikipedia embeddings
-    curl -Lo $vectors_dir/wiki.ru.vec https://s3-us-west-1.amazonaws.com/fasttext-vectors/wiki.ru.vec
+if [ $get_fastText > 0 ] && [ -f $vectors_dir/wiki.en.vec ] && [ -f $vectors_dir/wiki.nl.vec ] && [ -f $vectors_dir/wiki.ru.vec ]; then
+    echo "Found fastText vectors. Not re-downloading."
+elif [ $get_fastText > 0 ]
+    echo "Downloading fastText word embeddings. This will take a really long time and require 9GB of space!"
+    if [ ! -f $vectors_dir/wiki.en.vec ]; then
+        curl -Lo $vectors_dir/wiki.en.vec https://s3-us-west-1.amazonaws.com/fasttext-vectors/wiki.en.vec
+    fi
+    if [ ! -f $vectors_dir/wiki.nl.vec ]; thnl
+        curl -Lo $vectors_dir/wiki.nl.vec https://s3-us-west-1.amazonaws.com/fasttext-vectors/wiki.nl.vec
+    fi
+    if [ ! -f $vectors_dir/wiki.ru.vec ]; thru
+        curl -Lo $vectors_dir/wiki.ru.vec https://s3-us-west-1.amazonaws.com/fasttext-vectors/wiki.ru.vec
+    fi
 fi
 
 echo "Cloning biwikibot."
