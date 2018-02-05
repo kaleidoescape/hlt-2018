@@ -14,9 +14,12 @@ elif [ ! -f $vectors_dir/nl_vectors.txt ] || [ ! -f $vectors_dir/ru_vectors.txt 
     python3 w2v.py \
         --data_dir $wikipedia_data \
         --cstlemma_dir $cstlemma_dir \
-        --vectors_dir $vectors_dir
-        
-    
+        --vectors_dir $vectors_dir 
+    python3 w2v.py \
+        --data_dir $wikipedia_data \
+        --cstlemma_dir $cstlemma_dir \
+        --vectors_dir $vectors_dir \ 
+        --lemma    
 else
     echo "Step 1: Previously trained language specific vectors found."
 fi
@@ -33,8 +36,24 @@ fi
 
 echo "Step 3: Training correspondences with MUSE."
 cd $wd/MUSE
-python3 unsupervised.py --src_lang nl --tgt_lang ru --src_emb ../vectors/nl_vectors.txt --tgt_emb ../vectors/ru_vectors.txt --cuda True --max_vocab 35000 --dis_most_frequent 10000 --refinement True --epoch_size 50000
 
-python3 unsupervised.py --src_lang ru --tgt_lang nl --src_emb ../vectors/ru_vectors.txt --tgt_emb ../vectors/nl_vectors.txt --cuda True --max_vocab 35000 --dis_most_frequent 10000 --refinement True --epoch_size 50000
+#Train on our vectors which were lemmatized prior to word embedding
+python3 unsupervised.py --src_lang nl --tgt_lang ru --src_emb ../vectors/nl_vectors_lemma.txt --tgt_emb ../vectors/ru_vectors_lemma.txt --cuda True --max_vocab 35000 --dis_most_frequent 35000 --refinement True --epoch_size 100000
+
+python3 unsupervised.py --src_lang ru --tgt_lang nl --src_emb ../vectors/ru_vectors_lemma.txt --tgt_emb ../vectors/nl_vectors_lemma.txt --cuda true --max_vocab 35000 --dis_most_frequent 35000 --refinement true --epoch_size 100000
+
+#Train on our vectors which were not lemmatized prior to word embedding
+python3 unsupervised.py --src_lang nl --tgt_lang ru --src_emb ../vectors/nl_vectors_nolemma.txt --tgt_emb ../vectors/ru_vectors_nolemma.txt --cuda True --max_vocab 35000 --dis_most_frequent 35000 --refinement True --epoch_size 100000
+
+python3 unsupervised.py --src_lang ru --tgt_lang nl --src_emb ../vectors/ru_vectors_nolemma.txt --tgt_emb ../vectors/nl_vectors_nolemma.txt --cuda true --max_vocab 35000 --dis_most_frequent 35000 --refinement true --epoch_size 100000
+
+#Train baselines on fastText vectors
+python3 unsupervised.py --src_lang nl --tgt_lang ru --src_emb ../vectors/wiki.nl.vec --tgt_emb ../vectors/wiki.ru.vec --cuda True --max_vocab 35000 --dis_most_frequent 35000 --refinement True --epoch_size 100000
+
+python3 unsupervised.py --src_lang ru --tgt_lang nl --src_emb ../vectors/wiki.ru.vec --tgt_emb ../vectors/wiki.nl.vec --cuda true --max_vocab 35000 --dis_most_frequent 35000 --refinement true --epoch_size 100000
+
+#Train baseline en-ru MUSE system to check if program works correctly
+python3 unsupervised.py --src_lang en --tgt_lang ru --src_emb ../vectors/wiki.en.vec --tgt_emb ../vectors/wiki.ru.vec --cuda True --max_vocab 35000 --dis_most_frequent 35000 --refinement True --epoch_size 100000
+
 
 exit 0 #to exit the virtualenv subshell

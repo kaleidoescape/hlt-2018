@@ -21,7 +21,7 @@ class SentenceGenerator(object):
     UNK = 'UNK'
     PUNCTUATION = PUNCTUATION
 
-    def __init__(self, language='english', maxsents=0, cstlemma_dir=None):
+    def __init__(self, language='english', maxsents=0, lemma=False, cstlemma_dir=None):
         self.filepaths = None
         self.sentence_list = None
         self.language = language
@@ -29,6 +29,7 @@ class SentenceGenerator(object):
         self.maxsents = maxsents
         self.count = 0
         self.word_token_count = 0
+        self.lemma = lemma
         self.cstlemma_dir = cstlemma_dir
         if not self.cstlemma_dir:
             self.cstlemma_dir = w2vconfig.cstlemma_dir
@@ -58,25 +59,35 @@ class SentenceGenerator(object):
                     raise StopIteration
                 yield self._process_sentence(sentence)
 
-        if self.filepaths is not None:
+        if self.filepaths is not None and self.lemma:
             for fp in self.filepaths:
-                #if self.language == 'dutch': 
-                #    text = self._get_filetext_with_cstlemma(fp)
-                #    sents = sent_tokenize(text) #split into sentences
-                #    for sent in sents:
-                #        self.count += 1
-                #        if self.maxsents and self.count > self.maxsents:
-                #            raise StopIteration
-                #        yield self._process_sentence(sent) 
-                #else:
-                with open(fp, 'r', encoding='utf-8') as infp:
-                    text = infp.read() 
+                if self.language == 'dutch': 
+                    text = self._get_filetext_with_cstlemma(fp)
                     sents = sent_tokenize(text) #split into sentences
                     for sent in sents:
                         self.count += 1
                         if self.maxsents and self.count > self.maxsents:
                             raise StopIteration
-                        yield self._process_sentence(sent)
+                        yield self._process_sentence(sent) 
+                else:
+                    with open(fp, 'r', encoding='utf-8') as infp:
+                        text = infp.read() 
+                        sents = sent_tokenize(text) #split into sentences
+                        for sent in sents:
+                            self.count += 1
+                            if self.maxsents and self.count > self.maxsents:
+                                raise StopIteration
+                            yield self._process_sentence(sent)
+        elif self.filepaths is not None:
+            with open(fp, 'r', encoding='utf-8') as infp:
+                text = infp.read() 
+                sents = sent_tokenize(text) #split into sentences
+                for sent in sents:
+                    self.count += 1
+                    if self.maxsents and self.count > self.maxsents:
+                        raise StopIteration
+                    yield self._process_sentence(sent)
+
 
     def _get_filetext_with_cstlemma(self, fp):
         cmd = "{}/cstlemma/cstlemma -L -f {}/flexrules.dutch -i {}".format(self.cstlemma_dir, self.cstlemma_dir, fp)
@@ -103,11 +114,10 @@ class SentenceGenerator(object):
         regex = re.compile(r'^[$€]?(?=.)([+-]?([0-9]*)(\.([0-9]+))?)$')
         
         #split into words
-        #if self.language == 'russian':
-        #    tokenized = self.m.lemmatize(sentence)
-        #else:
-        #    tokenized = word_tokenize(sentence)
-        tokenized = word_tokenize(sentence)
+        if self.language == 'russian' and self.lemma:
+            tokenized = self.m.lemmatize(sentence)
+        else:
+            tokenized = word_tokenize(sentence)
         
         #process into lowercased words, replacing numbers and punctuation
         tokens = []
