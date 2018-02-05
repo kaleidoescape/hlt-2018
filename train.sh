@@ -27,7 +27,7 @@ else
         python3 w2v.py \
             --data_dir $wikipedia_data \
             --cstlemma_dir $cstlemma_dir \
-            --vectors_dir $vectors_dir \
+            --vectors_dir $vectors_dir 
     fi 
 fi
 
@@ -56,11 +56,11 @@ python3 unsupervised.py --src_lang ru --tgt_lang nl --src_emb ../vectors/ru_vect
 
 #To train the baseline models, you have to downloaded the fastText vectors,
 #which are not downloaded in install.sh by default, because they are huge
-if [ $do_baselines > 1 ]; then
+if [ $do_baselines > 0 ]; then
     #Train baselines on fastText vectors
     python3 unsupervised.py --src_lang nl --tgt_lang ru --src_emb ../vectors/wiki.nl.vec --tgt_emb ../vectors/wiki.ru.vec --cuda True --max_vocab 35000 --dis_most_frequent 35000 --refinement True --epoch_size 100000
 
-    python3 unsupervised.py --src_lang ru --tgt_lang nl --src_emb ../vectors/wiki.ru.vec --tgt_emb ../vectors/wiki.nl.vec --cuda true --max_vocab 35000 --dis_most_frequent 35000 --refinement true --epoch_size 100000
+    python3 unsupervised.py --src_lang ru --tgt_lang nl --src_emb ../vectors/wiki.ru.vec --tgt_emb ../vectors/wiki.nl.vec --cuda true --max_vocab 35000 --dis_most_frequent 35000 --refinement True --epoch_size 100000
 
     #Train baseline en-ru MUSE system to check if program works correctly
     python3 unsupervised.py --src_lang en --tgt_lang ru --src_emb ../vectors/wiki.en.vec --tgt_emb ../vectors/wiki.ru.vec --cuda True --max_vocab 35000 --dis_most_frequent 35000 --refinement True --epoch_size 100000
@@ -70,3 +70,4 @@ if [ $do_baselines > 1 ]; then
 fi
 
 exit 0 #to exit the virtualenv subshell
+
