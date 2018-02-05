@@ -48,7 +48,7 @@ if [ ! -f $dictionaries/en-ru.txt ]; then
 fi
 
 #TODO update this
-if [ ! -d $vectors_dir/nl_vectors.txt ] || [ ! -f $vectors_dir/ru_vectors.txt ]; then
+if [ ! -f $vectors_dir/nl_vectors.txt ] || [ ! -f $vectors_dir/ru_vectors.txt ]; then
     echo "Downloading pre-trained word vectors."
     wget -O vectors.zip https://www.dropbox.com/s/nl7bwt5rnf0jhsz/vectors.zip?dl=1
     unzip vectors.zip
@@ -58,7 +58,7 @@ fi
 
 if [ $get_fastText > 0 ] && [ -f $vectors_dir/wiki.en.vec ] && [ -f $vectors_dir/wiki.nl.vec ] && [ -f $vectors_dir/wiki.ru.vec ]; then
     echo "Found fastText vectors. Not re-downloading."
-elif [ $get_fastText > 0 ]
+elif [ $get_fastText > 0 ]; then
     echo "Downloading fastText word embeddings. This will take a really long time and require 9GB of space!"
     if [ ! -f $vectors_dir/wiki.en.vec ]; then
         curl -Lo $vectors_dir/wiki.en.vec https://s3-us-west-1.amazonaws.com/fasttext-vectors/wiki.en.vec
