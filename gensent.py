@@ -63,7 +63,7 @@ class SentenceGenerator(object):
             for fp in self.filepaths:
                 if self.language == 'dutch': 
                     text = self._get_filetext_with_cstlemma(fp)
-                    sents = sent_tokenize(text) #split into sentences
+                    sents = sent_tokenize(text, language=self.language)
                     for sent in sents:
                         self.count += 1
                         if self.maxsents and self.count > self.maxsents:
@@ -91,7 +91,7 @@ class SentenceGenerator(object):
 
 
     def _get_filetext_with_cstlemma(self, fp):
-        cmd = "{}/cstlemma/cstlemma -L -f {}/flexrules.dutch -i {}".format(self.cstlemma_dir, self.cstlemma_dir, fp)
+        cmd = "{}/cstlemma/cstlemma -L -f {}/cstlemma/flexrules.dutch -i {}".format(self.cstlemma_dir, self.cstlemma_dir, fp)
         process = subprocess.Popen(cmd, shell=True,
             stdout=subprocess.PIPE, 
             stderr=subprocess.PIPE)
@@ -128,10 +128,9 @@ class SentenceGenerator(object):
             if w in self.PUNCTUATION or not w:  
                 continue              #remove !"#$%&'()*+,-./:;<=>?@[\]^_`{|}~
             if len(w.split()) > 1: #replace words with spaces inside w/ UNK;
-                w = self.UNK       #(TODO these probably shouldn't exist)
+                continue           #(TODO these probably shouldn't exist)
             tokens.append(w)
             self.word_token_count += 1
-
         return tokens
 
     def __iter__(self):

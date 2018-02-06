@@ -30,7 +30,7 @@ class TestSentenceGenerator(unittest.TestCase):
         self.assertEqual(result, correct)
 
     def test_process_sentence_russian(self):
-        sentences = gensent.SentenceGenerator(language='russian')
+        sentences = gensent.SentenceGenerator(language='russian', lemma=True)
         result = sentences._process_sentence("Три девицы под окном Пряли поздно вечерком.")
         correct = ['три', 'девица', 'под', 'окно', 'прясть', 'поздно', 'вечерок']
         self.assertEqual(result, correct)
@@ -54,10 +54,11 @@ class TestSentenceGenerator(unittest.TestCase):
         self.assertEqual(result, correct)
         
     def test_dutch(self):
-        sentences = gensent.SentenceGenerator(language='dutch')
+        sentences = gensent.SentenceGenerator(language='dutch', lemma=True)
         result = sentences._process_sentence("Ik ga naar buiten toe")
         correct = ['ik', 'gaan', 'naar', 'buiten', 'toe']
         self.assertEqual(result, correct)
+
 
 if __name__ == '__main__':
     unittest.main()

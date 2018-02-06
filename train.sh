@@ -31,7 +31,7 @@ else
     fi 
 fi
 
-if [ ! -f $dictionaries/nl-ru.txt ] || [ ! -f $dictionaries/ru-nl.txt ]; then
+if [ ! -f $dictionaries/nl-ru.txt ] || [ ! -f $dictionaries/ru-nl.txt ] || [ ! -f $dictionaries/nl-ru.5000-6500.txt ]; then
     echo "Step 2: Making Dutch/Russian dictionaries."
     python3 create_dict.py \
         --nl_ru $dictionaries/nl-ru \
@@ -47,12 +47,12 @@ cd $wd/MUSE
 #Train on our vectors which were lemmatized prior to word embedding
 python3 unsupervised.py --src_lang nl --tgt_lang ru --src_emb ../vectors/nl_vectors_lemma.txt --tgt_emb ../vectors/ru_vectors_lemma.txt --cuda True --max_vocab 35000 --dis_most_frequent 35000 --refinement True --epoch_size 100000
 
-python3 unsupervised.py --src_lang ru --tgt_lang nl --src_emb ../vectors/ru_vectors_lemma.txt --tgt_emb ../vectors/nl_vectors_lemma.txt --cuda true --max_vocab 35000 --dis_most_frequent 35000 --refinement true --epoch_size 100000
+python3 unsupervised.py --src_lang ru --tgt_lang nl --src_emb ../vectors/ru_vectors_lemma.txt --tgt_emb ../vectors/nl_vectors_lemma.txt --cuda True --max_vocab 35000 --dis_most_frequent 35000 --refinement True --epoch_size 100000
 
 #Train on our vectors which were not lemmatized prior to word embedding
 python3 unsupervised.py --src_lang nl --tgt_lang ru --src_emb ../vectors/nl_vectors_nolemma.txt --tgt_emb ../vectors/ru_vectors_nolemma.txt --cuda True --max_vocab 35000 --dis_most_frequent 35000 --refinement True --epoch_size 100000
 
-python3 unsupervised.py --src_lang ru --tgt_lang nl --src_emb ../vectors/ru_vectors_nolemma.txt --tgt_emb ../vectors/nl_vectors_nolemma.txt --cuda true --max_vocab 35000 --dis_most_frequent 35000 --refinement true --epoch_size 100000
+python3 unsupervised.py --src_lang ru --tgt_lang nl --src_emb ../vectors/ru_vectors_nolemma.txt --tgt_emb ../vectors/nl_vectors_nolemma.txt --cuda True --max_vocab 35000 --dis_most_frequent 35000 --refinement True --epoch_size 100000
 
 #To train the baseline models, you have to downloaded the fastText vectors,
 #which are not downloaded in install.sh by default, because they are huge
@@ -60,7 +60,7 @@ if [ $do_baselines > 0 ]; then
     #Train baselines on fastText vectors
     python3 unsupervised.py --src_lang nl --tgt_lang ru --src_emb ../vectors/wiki.nl.vec --tgt_emb ../vectors/wiki.ru.vec --cuda True --max_vocab 35000 --dis_most_frequent 35000 --refinement True --epoch_size 100000
 
-    python3 unsupervised.py --src_lang ru --tgt_lang nl --src_emb ../vectors/wiki.ru.vec --tgt_emb ../vectors/wiki.nl.vec --cuda true --max_vocab 35000 --dis_most_frequent 35000 --refinement True --epoch_size 100000
+    python3 unsupervised.py --src_lang ru --tgt_lang nl --src_emb ../vectors/wiki.ru.vec --tgt_emb ../vectors/wiki.nl.vec --cuda True --max_vocab 35000 --dis_most_frequent 35000 --refinement True --epoch_size 100000
 
     #Train baseline en-ru MUSE system to check if program works correctly
     python3 unsupervised.py --src_lang en --tgt_lang ru --src_emb ../vectors/wiki.en.vec --tgt_emb ../vectors/wiki.ru.vec --cuda True --max_vocab 35000 --dis_most_frequent 35000 --refinement True --epoch_size 100000
@@ -70,4 +70,24 @@ if [ $do_baselines > 0 ]; then
 fi
 
 exit 0 #to exit the virtualenv subshell
+
+#Working on Dutch...
+#Dutch word tokens: 127320984
+#Dutch vocab size: 29786
+#Elapsed time: 8610.834413051605
+#
+#Working on Russian...
+#Russian word tokens: 198561330
+#Russian vocab size: 38681
+#Elapsed time: 14095.03592634201
+#
+#Working on Dutch...
+#Dutch word tokens: 127627062
+#Dutch vocab size: 30251
+#Elapsed time: 2907.1863329410553
+#
+#Working on Russian...
+#Russian word tokens: 190516290
+#Russian vocab size: 27714
+#Elapsed time: 5548.919402122498
 
