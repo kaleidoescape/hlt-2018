@@ -45,28 +45,28 @@ echo "Step 3: Training correspondences with MUSE."
 cd $wd/MUSE
 
 #Train on our vectors which were lemmatized prior to word embedding
-python3 unsupervised.py --src_lang nl --tgt_lang ru --src_emb ../vectors/nl_vectors_lemma.txt --tgt_emb ../vectors/ru_vectors_lemma.txt --cuda True --max_vocab 35000 --dis_most_frequent 2500 --refinement True --epoch_size 100000
+python3 unsupervised.py --src_lang nl --tgt_lang ru --src_emb ../vectors/nl_vectors_lemma.txt --tgt_emb ../vectors/ru_vectors_lemma.txt --cuda True --max_vocab 35000 --dis_most_frequent 2500 --refinement True --epoch_size 100000 --n_epochs 5
 
-python3 unsupervised.py --src_lang ru --tgt_lang nl --src_emb ../vectors/ru_vectors_lemma.txt --tgt_emb ../vectors/nl_vectors_lemma.txt --cuda True --max_vocab 35000 --dis_most_frequent 2500 --refinement True --epoch_size 100000
+python3 unsupervised.py --src_lang ru --tgt_lang nl --src_emb ../vectors/ru_vectors_lemma.txt --tgt_emb ../vectors/nl_vectors_lemma.txt --cuda True --max_vocab 35000 --dis_most_frequent 2500 --refinement True --epoch_size 100000 --n_epochs 5
 
 #Train on our vectors which were not lemmatized prior to word embedding
-python3 unsupervised.py --src_lang nl --tgt_lang ru --src_emb ../vectors/nl_vectors_nolemma.txt --tgt_emb ../vectors/ru_vectors_nolemma.txt --cuda True --max_vocab 35000 --dis_most_frequent 2500 --refinement True --epoch_size 100000
+python3 unsupervised.py --src_lang nl --tgt_lang ru --src_emb ../vectors/nl_vectors_nolemma.txt --tgt_emb ../vectors/ru_vectors_nolemma.txt --cuda True --max_vocab 35000 --dis_most_frequent 2500 --refinement True --epoch_size 100000 --n_epochs 5
 
-python3 unsupervised.py --src_lang ru --tgt_lang nl --src_emb ../vectors/ru_vectors_nolemma.txt --tgt_emb ../vectors/nl_vectors_nolemma.txt --cuda True --max_vocab 35000 --dis_most_frequent 2500 --refinement True --epoch_size 100000
+python3 unsupervised.py --src_lang ru --tgt_lang nl --src_emb ../vectors/ru_vectors_nolemma.txt --tgt_emb ../vectors/nl_vectors_nolemma.txt --cuda True --max_vocab 35000 --dis_most_frequent 2500 --refinement True --epoch_size 100000 --n_epochs 5
 
 #To train the baseline models, you have to downloaded the fastText vectors,
 #which are not downloaded in install.sh by default, because they are huge
 if [ $do_baselines > 0 ]; then
     #Train baselines on fastText vectors
-    python3 unsupervised.py --src_lang nl --tgt_lang ru --src_emb ../vectors/wiki.nl.vec --tgt_emb ../vectors/wiki.ru.vec --cuda True --max_vocab 35000 --dis_most_frequent 2500 --refinement True --epoch_size 100000
+    python3 unsupervised.py --src_lang nl --tgt_lang ru --src_emb ../vectors/wiki.nl.vec --tgt_emb ../vectors/wiki.ru.vec --cuda True --max_vocab 35000 --dis_most_frequent 2500 --refinement True --epoch_size 500000 --n_epochs 5
 
-    python3 unsupervised.py --src_lang ru --tgt_lang nl --src_emb ../vectors/wiki.ru.vec --tgt_emb ../vectors/wiki.nl.vec --cuda True --max_vocab 35000 --dis_most_frequent 2500 --refinement True --epoch_size 100000
+    python3 unsupervised.py --src_lang ru --tgt_lang nl --src_emb ../vectors/wiki.ru.vec --tgt_emb ../vectors/wiki.nl.vec --cuda True --max_vocab 35000 --dis_most_frequent 2500 --refinement True --epoch_size 500000 --n_epochs 5
 
     #Train baseline en-ru MUSE system to check if program works correctly
-    python3 unsupervised.py --src_lang en --tgt_lang ru --src_emb ../vectors/wiki.en.vec --tgt_emb ../vectors/wiki.ru.vec --cuda True --max_vocab 35000 --dis_most_frequent 2500 --refinement True --epoch_size 100000
+    python3 unsupervised.py --src_lang en --tgt_lang ru --src_emb ../vectors/wiki.en.vec --tgt_emb ../vectors/wiki.ru.vec --cuda True --max_vocab 35000 --dis_most_frequent 2500 --refinement True --epoch_size 500000 --n_epochs 5
     
     #Train baseline ru_en MUSE system to check if program works correctly
-    python3 unsupervised.py --src_lang ru --tgt_lang en --src_emb ../vectors/wiki.ru.vec --tgt_emb ../vectors/wiki.en.vec --cuda True --max_vocab 35000 --dis_most_frequent 2500 --refinement True --epoch_size 100000
+    python3 unsupervised.py --src_lang ru --tgt_lang en --src_emb ../vectors/wiki.ru.vec --tgt_emb ../vectors/wiki.en.vec --cuda True --max_vocab 35000 --dis_most_frequent 2500 --refinement True --epoch_size 500000 --n_epochs 5
 fi
 
 exit 0 #to exit the virtualenv subshell
