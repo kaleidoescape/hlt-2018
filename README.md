@@ -17,13 +17,7 @@ The rest of the dependencies will be downloaded automatically as needed during i
 - MUSE 
 - CSTLemma
 
-Pre-trained word vectors are downloaded. These word vectors were trained on a comparable corpora of Dutch and Russian Wikipedia data with vocab sizes of:
-
-Dutch word tokens: 127320984
-Dutch vocab size: 35519
-
-Russian word tokens: 200260626
-Russian vocab size: 38998
+Pre-trained word vectors are downloaded. These word vectors were trained on a comparable corpora of Dutch and Russian Wikipedia data.
 
 The articles and a list of their titles that were used to train these vectors will be downloaded as well.
 
@@ -39,7 +33,7 @@ cd hlt-2018
 
 ## Training
 
-The train script will automatically train any portions that weren't downloaded.
+The train script will automatically train the models.
 
 ```
 ./train.sh
