@@ -1,9 +1,7 @@
 # hlt-2018
 
-A class project for Human Language Technologies at University of Trento, winter semester 2017-2018.
+A class project for Human Language Technologies at University of Trento, winter semester 2017-2018, based on the work by Conneau et al: https://arxiv.org/pdf/1710.04087.pdf
 
-https://github.com/facebookresearch/MUSE
-https://arxiv.org/pdf/1710.04087.pdf
 
 ## Dependencies
 
@@ -14,7 +12,7 @@ The rest of the dependencies will be downloaded automatically as needed during i
  
 - gensim
 - nltk
-- MUSE 
+- MUSE  https://github.com/facebookresearch/MUSE
 - CSTLemma
 
 Pre-trained word vectors are downloaded. These word vectors were trained on a comparable corpora of Dutch and Russian Wikipedia data.
